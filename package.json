@@ -10,15 +10,19 @@
     "test": "jest"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "next": "12.2.0",
+    "next-auth": "^4.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "spotify-web-api-node": "^5.0.2",
     "youtube-search": "^1.1.6"
   },
   "devDependencies": {
     "@types/node": "18.0.3",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
+    "@types/spotify-web-api-node": "^5.0.7",
     "autoprefixer": "^10.4.7",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.0",
