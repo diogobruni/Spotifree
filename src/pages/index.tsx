@@ -1,18 +1,11 @@
 import type { NextPage } from 'next'
-import { Sidebar } from '../components/Sidebar'
+import { PlaylistCover } from '../components/PlaylistCover'
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-black h-screen overflow-hidden">
-      <main>
-        <Sidebar />
-        {/* Center */}
-      </main>
-
-      <div>
-        {/* Player */}
-      </div>
-    </div>
+    <main>
+      <h1>Home</h1>
+    </main>
   )
 }
 

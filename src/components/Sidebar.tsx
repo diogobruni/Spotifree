@@ -1,12 +1,40 @@
 import { HomeIcon, SearchIcon, LibraryIcon, PlusCircleIcon, HeartIcon, RssIcon, LogoutIcon } from "@heroicons/react/outline"
 import { signOut, useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+
+import useSpotify from "../hooks/useSpotify"
+import Link from "next/link"
+
+// interface PlaylistProps {
+//   id: string
+//   name: string
+//   href: string
+//   images: [{
+//     url: string
+//     width: number
+//     height: number,
+//   }]
+//   tracks: {
+//     href: string
+//     total: number
+//   }
+// }
 
 export function Sidebar() {
+  const spotifyApi = useSpotify()
   const { data: session, status } = useSession()
-  console.log(session)
+  const [playlist, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
+
+  useEffect(() => {
+    if (spotifyApi && spotifyApi.getAccessToken()) {
+      spotifyApi.getUserPlaylists().then(data => {
+        setPlaylists(data.body.items)
+      })
+    }
+  }, [session, spotifyApi])
 
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-900">
+    <div className="text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900 overflow-y-scroll h-screen scrollbar-hide sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex">
 
       <div className="space-y-4">
         <button
@@ -17,10 +45,12 @@ export function Sidebar() {
           <p>Logout</p>
         </button>
 
-        <button className="flex items-center gap-2 hover:text-white">
-          <HomeIcon className="h-5 w-5" />
-          <p>Home</p>
-        </button>
+        <Link href="/">
+          <a className="flex items-center gap-2 hover:text-white">
+            <HomeIcon className="h-5 w-5" />
+            <p>Home</p>
+          </a>
+        </Link>
 
         <button className="flex items-center gap-2 hover:text-white">
           <SearchIcon className="h-5 w-5" />
@@ -52,18 +82,16 @@ export function Sidebar() {
         <hr className="border-t-[0.1px] border-gray-900" />
 
         {/* Playlists... */}
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
-        <p className="cursor-pointer hover:text-white">Playlist name</p>
+        {playlist.map(playlist => (
+          <Link
+            key={playlist.id}
+            href={`/playlist/${playlist.id}`}
+          >
+            <a className="block cursor-pointer hover:text-white">
+              {playlist.name}
+            </a>
+          </Link>
+        ))}
       </div>
     </div>
   )
