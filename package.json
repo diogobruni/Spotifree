@@ -15,6 +15,7 @@
     "next-auth": "^4.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
     "react-use-cache": "^1.0.12",
     "recoil": "^0.7.4",
     "spotify-web-api-node": "^5.0.2",
@@ -22,6 +23,7 @@
     "youtube-search": "^1.1.6"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.0",
     "@types/node": "18.0.3",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import Loading from '../../components/Loading'
 
 // import { useRecoilState, useRecoilValue } from 'recoil'
 // import { playlistIdState, playlistState } from '../../atoms/playlistAtom'
@@ -54,13 +55,12 @@ export default function Playlist({ }: Props) {
     )
   }, [id])
 
+  if (!playlist)
+    return <Loading />
+
   return (
     <main>
-      {!playlist ? (
-        <p>Loading...</p>
-      ) : (
-        <PlaylistCover playlist={playlist} />
-      )}
+      <PlaylistCover playlist={playlist} />
     </main>
   )
 }

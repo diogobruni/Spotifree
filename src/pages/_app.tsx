@@ -14,16 +14,17 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <RecoilRoot>
 
         <div className="flex flex-col h-screen bg-black">
-          <div className="flex flex-grow flex-row">
+          {/* <div className="flex flex-row flex-grow"> */}
+          <div className="flex flex-row flex-1 overflow-hidden">
             <Sidebar />
 
-            <div className="bg-zinc-800 text-white flex-grow">
+            <div className="bg-zinc-900 text-white flex-1 overflow-y-scroll">
               <FloatingUserBar />
               <Component {...pageProps} />
             </div>
           </div>
 
-          <div className="h-28">
+          <div className="h-24">
             <Player />
           </div>
         </div>
