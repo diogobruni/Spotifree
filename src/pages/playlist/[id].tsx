@@ -1,15 +1,13 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import Loading from '../../components/Loading'
 
-// import { useRecoilState, useRecoilValue } from 'recoil'
-// import { playlistIdState, playlistState } from '../../atoms/playlistAtom'
-
-import { PlaylistCover } from '../../components/PlaylistCover'
 import { useCache } from '../../hooks/useCache'
 import useSpotify from '../../hooks/useSpotify'
-// import { spotifyApi } from '../../lib/spotify'
+
+import PlaylistCover from '../../components/PlaylistCover'
+import PlaylistSongs from '../../components/PlaylistSongs'
+import Loading from '../../components/Loading'
 
 type Props = {}
 
@@ -67,6 +65,8 @@ export default function Playlist({ }: Props) {
   return (
     <main>
       <PlaylistCover playlist={playlist} />
+
+      <PlaylistSongs playlist={playlist} />
     </main>
   )
 }

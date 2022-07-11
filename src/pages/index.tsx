@@ -2,10 +2,12 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil';
+
+import useSpotify from '../hooks/useSpotify';
 import { homeCategoriesPlaylists } from '../atoms/playlistAtom';
+
 import Loading from '../components/Loading';
 import PlaylistCard from '../components/PlaylistCard';
-import useSpotify from '../hooks/useSpotify';
 
 // import { spotifyApi } from '../lib/spotify'
 

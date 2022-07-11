@@ -20,11 +20,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <Component {...pageProps} />
         ) : (
           <div className="flex flex-col h-screen bg-black">
-            {/* <div className="flex flex-row flex-grow"> */}
             <div className="flex flex-row flex-1 overflow-hidden">
               <Sidebar />
 
-              <div className="bg-zinc-900 text-white flex-1 overflow-y-scroll">
+              <div className="bg-black text-white flex-1 overflow-y-scroll">
                 <FloatingUserBar />
                 <Component {...pageProps} />
               </div>

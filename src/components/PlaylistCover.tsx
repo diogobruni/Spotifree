@@ -14,7 +14,7 @@ const colors = [
   "from-purple-500",
 ]
 
-export function PlaylistCover({ playlist }: PlaylistCoverProps) {
+export default function PlaylistCover({ playlist }: PlaylistCoverProps) {
   const [color, setColor] = useState<string>('')
 
   useEffect(() => {
