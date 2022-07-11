@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             <div className="flex flex-row flex-1 overflow-hidden">
               <Sidebar />
 
-              <div className="bg-black text-white flex-1 overflow-y-scroll">
+              <div className="bg-black text-white flex-1 overflow-y-scroll scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-cursor-default">
                 <FloatingUserBar />
                 <Component {...pageProps} />
               </div>
