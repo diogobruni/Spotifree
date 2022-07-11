@@ -36,3 +36,5 @@ yarn-error.log*
 
 # Speedy Web Compiler - super-fast TypeScript / JavaScript compiler written in Rust
 /.swc/
+
+.vercel

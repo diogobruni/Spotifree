@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import Loading from '../../components/Loading'
@@ -7,13 +8,17 @@ import Loading from '../../components/Loading'
 
 import { PlaylistCover } from '../../components/PlaylistCover'
 import { useCache } from '../../hooks/useCache'
-import { spotifyApi } from '../../lib/spotify'
+import useSpotify from '../../hooks/useSpotify'
+// import { spotifyApi } from '../../lib/spotify'
+
 type Props = {}
 
 export default function Playlist({ }: Props) {
   const router = useRouter()
-
   const { id } = router.query
+
+  const spotifyApi = useSpotify()
+  const { data: session, status } = useSession()
 
   /**
    * WITHOUT CACHE
@@ -42,6 +47,7 @@ export default function Playlist({ }: Props) {
   const [playlist, getOrFetchPlaylist] = useCache<SpotifyApi.SinglePlaylistResponse | null>(null)
 
   useEffect(() => {
+    if (!spotifyApi || !spotifyApi.getAccessToken()) return
     if (!id) return
 
     getOrFetchPlaylist(
@@ -53,7 +59,7 @@ export default function Playlist({ }: Props) {
       ),
       id as string
     )
-  }, [id])
+  }, [id, session, spotifyApi])
 
   if (!playlist)
     return <Loading />

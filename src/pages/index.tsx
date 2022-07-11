@@ -1,24 +1,29 @@
 import type { NextPage } from 'next'
+import { useSession } from 'next-auth/react';
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { GrPlayFill } from "react-icons/gr";
 import { useRecoilState } from 'recoil';
 import { homeCategoriesPlaylists } from '../atoms/playlistAtom';
 import Loading from '../components/Loading';
+import useSpotify from '../hooks/useSpotify';
 
-import { spotifyApi } from '../lib/spotify'
+// import { spotifyApi } from '../lib/spotify'
 
 // interface CategoryWithPlaylistsProps extends SpotifyApi.CategoryObject {
 //   playlists?: SpotifyApi.PlaylistObjectSimplified[]
 // }
 
 const Home: NextPage = () => {
+  const spotifyApi = useSpotify()
+  const { data: session, status } = useSession()
+
   let isFetching = false
   // const [sectionPlaylists, setSectionPlaylists] = useState<CategoryWithPlaylistsProps[]>([])
   const [sectionPlaylists, setSectionPlaylists] = useRecoilState(homeCategoriesPlaylists)
 
   useEffect(() => {
-    if (!spotifyApi.getAccessToken()) return
+    if (!spotifyApi || !spotifyApi.getAccessToken()) return
     if (isFetching) return
     if (sectionPlaylists.length) return
     isFetching = true
@@ -51,7 +56,7 @@ const Home: NextPage = () => {
     }
 
     getCategories()
-  }, [spotifyApi.getAccessToken()])
+  }, [session, spotifyApi])
 
   if (!sectionPlaylists.length)
     return <Loading />

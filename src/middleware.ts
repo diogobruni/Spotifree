@@ -2,7 +2,14 @@ import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.JWT_Secret })
+  // const token = await getToken({ req, secret: process.env.JWT_Secret })
+
+  const token = await getToken({
+    req,
+    secret: process.env.JWT_SECRET,
+    // secureCookie: process.env.NEXTAUTH_URL?.startsWith("https://") ?? !!process.env.VERCEL_URL
+    secureCookie: process.env.VERCEL_URL ? true : false
+  })
 
   const { pathname } = req.nextUrl
 
@@ -17,11 +24,21 @@ export async function middleware(req: NextRequest) {
   }
 
   // Redirect to login page if no token is found and path is home
-  if (pathname == '/') {
+  // if (!token && pathname == '/') {
+  if (pathname !== '/login') {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
   // Allow everything else to pass through
-  // Beucase this middleware also treats static files
-  return NextResponse.next()
+  // Because this middleware also treats static files
+  // return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    '/',
+    '/api/:path*',
+    '/login',
+    '/playlist/:path*'
+  ],
 }

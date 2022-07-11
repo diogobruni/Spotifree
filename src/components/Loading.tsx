@@ -16,6 +16,7 @@ export default function Loading({ }: Props) {
           width={120}
           height={120}
           className="relative z-20 bg-zinc-900 rounded-full"
+          alt="Spotify loading"
         />
       </div>
 
