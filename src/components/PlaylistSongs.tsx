@@ -24,6 +24,7 @@ export default function PlaylistSongs({ playlist }: Props) {
       {playlist?.tracks.items.map((track, i) => (
         <Song
           key={track.track?.id}
+          playlistId={playlist.id}
           selectPlaylist={handleSelectPlaylist}
           track={track}
           order={i}

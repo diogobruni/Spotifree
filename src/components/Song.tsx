@@ -1,15 +1,17 @@
 import React from 'react'
 import { useRecoilState } from 'recoil'
-import { playerTrackIndexAtom } from '../atoms/playerAtom'
+import { playerPlaylistAtom, playerTrackIndexAtom } from '../atoms/playerAtom'
 import { duration } from '../lib/time'
 
 type Props = {
+  playlistId: string
   order: number
   track: SpotifyApi.PlaylistTrackObject
   selectPlaylist: () => void
 }
 
-export default function Song({ order, track, selectPlaylist }: Props) {
+export default function Song({ playlistId, order, track, selectPlaylist }: Props) {
+  const [playerPlaylist, setPlayerPlaylist] = useRecoilState(playerPlaylistAtom)
   const [playerTrackIndex, setPlayerTrackIndex] = useRecoilState(playerTrackIndexAtom)
 
   const handlePlaySong = () => {
@@ -17,9 +19,11 @@ export default function Song({ order, track, selectPlaylist }: Props) {
     setPlayerTrackIndex(order)
   }
 
+  const isCurrentSong = playerPlaylist?.id === playlistId && playerTrackIndex === order
+
   return (
     <div
-      className='grid grid-cols-2 text-zinc-400 py-4 px-5 hover:bg-gray-900 rounded-lg cursor-pointer'
+      className={`grid grid-cols-2 py-4 px-5 hover:bg-zinc-900 rounded-lg cursor-pointer ${isCurrentSong ? 'text-green-500' : 'text-zinc-400'}`}
       onClick={handlePlaySong}
     >
       <div className='flex items-center space-x-4'>
@@ -32,7 +36,7 @@ export default function Song({ order, track, selectPlaylist }: Props) {
         />
 
         <div>
-          <p className='w-36 lg:w-64 truncate text-white text-md'>{track.track?.name}</p>
+          <p className={`w-36 lg:w-64 truncate text-md ${isCurrentSong ? 'text-green-500' : 'text-white'}`}>{track.track?.name}</p>
           <p className='w-40 text-sm'>{track.track?.artists[0].name}</p>
         </div>
       </div>
