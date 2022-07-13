@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 
 import useSpotify from '../hooks/useSpotify';
@@ -19,15 +19,17 @@ const Home: NextPage = () => {
   const spotifyApi = useSpotify()
   const { data: session, status } = useSession()
 
-  let isFetching = false
+  // let isFetching = false
+  const [isFetching, setIsFetching] = useState(false)
   // const [sectionPlaylists, setSectionPlaylists] = useState<CategoryWithPlaylistsProps[]>([])
   const [sectionPlaylists, setSectionPlaylists] = useRecoilState(homeCategoriesPlaylists)
 
   useEffect(() => {
+    console.log(isFetching, sectionPlaylists.length, sectionPlaylists)
     if (!spotifyApi || !spotifyApi.getAccessToken()) return
-    if (isFetching) return
     if (sectionPlaylists.length) return
-    isFetching = true
+    if (isFetching) return
+    setIsFetching(true)
 
     const getCategories = async () => {
       const { categories } = (await spotifyApi.getCategories({
