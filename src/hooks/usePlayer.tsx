@@ -24,7 +24,7 @@ export default function usePlayer() {
   }
 
   const playPause = () => {
-    if (!playerPlaylist?.tracks?.items?.length || trackIndex < 0) return
+    // if (!playerPlaylist?.tracks?.items?.length || trackIndex < 0) return
     setIsPlaying(!isPlaying)
   }
 

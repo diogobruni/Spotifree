@@ -17,6 +17,8 @@ export default function Song({ playlistId, order, track, selectPlaylist }: Props
   } = usePlayer()
 
   const handlePlaySong = () => {
+    if (trackIndex === order) return
+
     selectPlaylist()
     setTrackIndex(order)
     play()

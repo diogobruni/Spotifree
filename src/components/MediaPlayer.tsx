@@ -45,6 +45,16 @@ export default function MediaPlayer({ }: Props) {
   useEffect(() => {
     if (!player) return
 
+    if (isPlaying) {
+      player.playVideo()
+    } else {
+      player.pauseVideo()
+    }
+  }, [isPlaying])
+
+  useEffect(() => {
+    if (!player) return
+
     player.setVolume(volume)
   }, [volume])
 

@@ -12,7 +12,6 @@ type Props = {
 
 export default function PlaylistSongs({ playlist }: Props) {
   const {
-    play,
     setPlayerPlaylist
   } = usePlayer()
 
