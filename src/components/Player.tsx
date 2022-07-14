@@ -1,49 +1,56 @@
 // https://github.com/jergra/spotify-react-next-2/blob/main/components/Player.js
 
 import {
-  HandIcon,
   VolumeUpIcon as VolumeDownIcon
 } from "@heroicons/react/outline"
 
 import {
   RewindIcon,
   FastForwardIcon,
+  RefreshIcon,
   PauseIcon,
   PlayIcon,
   ReplyIcon,
   VolumeUpIcon,
   SwitchHorizontalIcon,
 } from "@heroicons/react/solid"
+
+import { GrPlayFill, GrPauseFill, GrRefresh, GrFastForward } from "react-icons/gr"
+import { AiFillForward, AiFillBackward } from "react-icons/ai"
 import { useSession } from "next-auth/react"
-import { useCallback, useEffect, useState } from "react"
-import { useRecoilState } from "recoil"
-import { playerPlaylistAtom, playerTrackIndexAtom } from "../atoms/playerAtom"
+import usePlayer from "../hooks/usePlayer"
 import useSpotify from "../hooks/useSpotify"
+import MediaPlayer from "./MediaPlayer"
 
 type Props = {}
 
 export default function Player({ }: Props) {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
 
-  const [playlist, setPlaylist] = useRecoilState(playerPlaylistAtom)
-  const [trackIndex, setTrackIndex] = useRecoilState(playerTrackIndexAtom)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [volume, setVolume] = useState<number>(50)
+  const {
+    playerPlaylist,
+    trackIndex,
+    isPlaying, playPause,
+    isPlayerFetching,
+    volume, setVolume,
+    prevTrack, nextTrack
+  } = usePlayer()
 
-  const { track } = playlist?.tracks?.items[trackIndex] || {}
+  const { track } = playerPlaylist?.tracks?.items[trackIndex] || {}
 
   const handlePlayPause = () => {
-    //
+    // setIsPlaying(!isPlaying)
+    playPause()
   }
 
-  // if (!track) return (
-  //   <div className="h-full flex items-center justify-center border border-white">
-  //     <span className="text-white text-3xl font-semibold">
-  //       Player
-  //     </span>
-  //   </div>
-  // )
+  const handlePrevTrack = () => {
+    prevTrack()
+  }
+
+  const handleNextTrack = () => {
+    nextTrack()
+  }
 
   return (
     // <div className="h-24 bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
@@ -60,27 +67,55 @@ export default function Player({ }: Props) {
           <h3 className="text-md">{track?.name}</h3>
           <p className="text-sm text-zinc-400">{track?.artists?.[0]?.name}</p>
         </div>
+
+        <MediaPlayer />
       </div>
 
       {/* center */}
       <div className="flex items-center justify-evenly">
-        <SwitchHorizontalIcon
+        {/* <SwitchHorizontalIcon
           className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
-        />
-        <RewindIcon
-          onClick={() => spotifyApi.skipToPrevious()}
+        /> */}
+
+        <button
+          className=""
+          onClick={handlePrevTrack}
+        >
+          <AiFillBackward className="h-5 w-5" color="white" />
+        </button>
+        {/* <RewindIcon
+          onClick={handlePrevTrack}
           className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
-        />
-        {isPlaying ? (
-          <PauseIcon onClick={handlePlayPause} className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
-        ) : (
-          <PlayIcon onClick={handlePlayPause} className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
-        )}
-        <FastForwardIcon
-          onClick={() => spotifyApi.skipToNext()}
-          className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
-        />
-        <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
+        /> */}
+
+        <button
+          className="h-10 w-10 bg-white rounded-full flex items-center justify-center hover:scale-110 transition transform duration-100 ease-out"
+          onClick={handlePlayPause}
+        >
+          {isPlaying && isPlayerFetching && (
+            // <RefreshIcon className="h-10 w-10 cursor-pointer animate-spin" />
+            <GrRefresh className="h-5 w-5 animate-spin" />
+          )}
+
+          {isPlaying && !isPlayerFetching && (
+            // <PauseIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
+            <GrPauseFill className="h-5 w-5" />
+          )}
+
+          {!isPlaying && (
+            // <PlayIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
+            <GrPlayFill className="h-5 w-5 translate-x-0.5" />
+          )}
+        </button>
+
+        <button
+          className=""
+          onClick={handleNextTrack}
+        >
+          <AiFillForward className="h-5 w-5" color="white" />
+        </button>
+
+        {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
       </div>
 
       {/* right */}

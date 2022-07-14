@@ -3,7 +3,9 @@ export interface MediaSearchData {
 }
 
 export interface MediaSearchResult {
-  url: string
+  id: string
+  url?: string
+  title?: string
 }
 
 export interface MediaRepository {

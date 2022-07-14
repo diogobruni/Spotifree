@@ -1,6 +1,5 @@
 import React from 'react'
-import { useRecoilState } from 'recoil'
-import { playerPlaylistAtom } from '../atoms/playerAtom'
+import usePlayer from '../hooks/usePlayer'
 import Song from './Song'
 
 interface PlaylistWithTracks extends SpotifyApi.SinglePlaylistResponse {
@@ -12,11 +11,14 @@ type Props = {
 }
 
 export default function PlaylistSongs({ playlist }: Props) {
-  const [playerPlaylist, setPlayerPlaylist] = useRecoilState(playerPlaylistAtom)
+  const {
+    play,
+    setPlayerPlaylist
+  } = usePlayer()
 
   const handleSelectPlaylist = () => {
-    // setPlayerPlaylist(playlist?.tracks.items)
     setPlayerPlaylist(playlist)
+    play()
   }
 
   return (

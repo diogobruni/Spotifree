@@ -14,6 +14,7 @@ export class YoutubeSearchRepository implements MediaRepository {
       if (!results.length) return {}
 
       return {
+        id: results[0].id,
         url: results[0].link
       } as MediaSearchResult
     } catch (err) {

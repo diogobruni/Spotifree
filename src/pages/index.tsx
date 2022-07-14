@@ -25,7 +25,6 @@ const Home: NextPage = () => {
   const [sectionPlaylists, setSectionPlaylists] = useRecoilState(homeCategoriesPlaylists)
 
   useEffect(() => {
-    console.log(isFetching, sectionPlaylists.length, sectionPlaylists)
     if (!spotifyApi || !spotifyApi.getAccessToken()) return
     if (sectionPlaylists.length) return
     if (isFetching) return
