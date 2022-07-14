@@ -1,6 +1,5 @@
 import React from 'react'
-import { useRecoilState } from 'recoil'
-import { playerPlaylistAtom, playerTrackIndexAtom } from '../atoms/playerAtom'
+import usePlayer from '../hooks/usePlayer'
 import { duration } from '../lib/time'
 
 type Props = {
@@ -11,15 +10,19 @@ type Props = {
 }
 
 export default function Song({ playlistId, order, track, selectPlaylist }: Props) {
-  const [playerPlaylist, setPlayerPlaylist] = useRecoilState(playerPlaylistAtom)
-  const [playerTrackIndex, setPlayerTrackIndex] = useRecoilState(playerTrackIndexAtom)
+  const {
+    playerPlaylist, setPlayerPlaylist,
+    trackIndex, setTrackIndex,
+    play
+  } = usePlayer()
 
   const handlePlaySong = () => {
     selectPlaylist()
-    setPlayerTrackIndex(order)
+    setTrackIndex(order)
+    play()
   }
 
-  const isCurrentSong = playerPlaylist?.id === playlistId && playerTrackIndex === order
+  const isCurrentSong = playerPlaylist?.id === playlistId && trackIndex === order
 
   return (
     <div

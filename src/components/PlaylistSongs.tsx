@@ -18,7 +18,6 @@ export default function PlaylistSongs({ playlist }: Props) {
 
   const handleSelectPlaylist = () => {
     setPlayerPlaylist(playlist)
-    play()
   }
 
   return (

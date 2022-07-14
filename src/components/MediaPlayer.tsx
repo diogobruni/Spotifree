@@ -45,16 +45,6 @@ export default function MediaPlayer({ }: Props) {
   useEffect(() => {
     if (!player) return
 
-    if (isPlaying) {
-      player.playVideo()
-    } else {
-      player.pauseVideo()
-    }
-  }, [isPlaying])
-
-  useEffect(() => {
-    if (!player) return
-
     player.setVolume(volume)
   }, [volume])
 
@@ -68,6 +58,7 @@ export default function MediaPlayer({ }: Props) {
   }
 
   const handlePlayerStateChange: YouTubeProps['onStateChange'] = (event) => {
+    console.log(player.getPlayerState())
     setPlayerState(player.getPlayerState())
     switch (player.getPlayerState()) {
       case -1:

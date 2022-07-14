@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
 
 import { playerIsFetchingAtom, playerIsPlayingAtom, playerPlaylistAtom, playerStateAtom, playerTrackIndexAtom, playerVolumeAtom } from "../atoms/playerAtom"
@@ -25,9 +24,8 @@ export default function usePlayer() {
   }
 
   const playPause = () => {
-    if (playerPlaylist?.tracks?.items?.length && trackIndex >= 0) {
-      setIsPlaying(!isPlaying)
-    }
+    if (!playerPlaylist?.tracks?.items?.length || trackIndex < 0) return
+    setIsPlaying(!isPlaying)
   }
 
   const prevTrack = () => {

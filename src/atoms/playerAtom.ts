@@ -11,7 +11,7 @@ export const playerPlaylistAtom = atom<PlaylistWithTracks>({
 
 export const playerTrackIndexAtom = atom<number>({
   key: "playerTrackIndexAtom",
-  default: 0,
+  default: -1,
 })
 
 export const playerStateAtom = atom<number>({
