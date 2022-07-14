@@ -68,7 +68,6 @@ export default function MediaPlayer({ }: Props) {
   }
 
   const handlePlayerStateChange: YouTubeProps['onStateChange'] = (event) => {
-    console.log(player.getPlayerState())
     setPlayerState(player.getPlayerState())
     switch (player.getPlayerState()) {
       case -1:
