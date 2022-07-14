@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+import { PlaylistProps } from "../types/playlist.types"
 
 interface PlaylistCoverProps {
-  playlist: SpotifyApi.SinglePlaylistResponse
+  playlist: PlaylistProps
 }
 
 const colors = [
@@ -25,7 +26,7 @@ export default function PlaylistCover({ playlist }: PlaylistCoverProps) {
     <section className={`flex items-end space-x-7 bg-gradient-to-b ${color} to-black h-80 text-white p-8`}>
       <img
         className="w-56 h-56 shadow-2xl"
-        src={playlist?.images?.[0].url}
+        src={playlist?.images?.[0]?.url}
         alt=""
       />
 

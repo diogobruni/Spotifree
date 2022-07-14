@@ -1,30 +1,30 @@
 import React from 'react'
 import usePlayer from '../hooks/usePlayer'
+import { PlaylistProps } from '../types/playlist.types'
+import { TrackListProps } from '../types/trackList.types'
 import Song from './Song'
 
-interface PlaylistWithTracks extends SpotifyApi.SinglePlaylistResponse {
-  tracks: SpotifyApi.PlaylistTrackResponse
-}
-
 type Props = {
-  playlist: PlaylistWithTracks
+  trackList: TrackListProps | undefined
 }
 
-export default function PlaylistSongs({ playlist }: Props) {
+export default function PlaylistSongs({ trackList }: Props) {
   const {
     setPlayerPlaylist
   } = usePlayer()
 
   const handleSelectPlaylist = () => {
-    setPlayerPlaylist(playlist)
+    setPlayerPlaylist(trackList)
   }
+
+  if (!trackList) return <>Lista vazia</>
 
   return (
     <div className='p-8 flex flex-col space-y-1 text-white'>
-      {playlist?.tracks.items.map((track, i) => (
+      {trackList?.tracks.map((track, i) => (
         <Song
-          key={track.track?.id}
-          playlistId={playlist.id}
+          key={track.id}
+          trackListSourceId={trackList.sourceId}
           selectPlaylist={handleSelectPlaylist}
           track={track}
           order={i}

@@ -27,7 +27,7 @@ export default function MediaPlayer({ }: Props) {
   } = usePlayer()
 
   useEffect(() => {
-    const { track } = playerPlaylist?.tracks?.items[trackIndex] || {}
+    const track = playerPlaylist?.tracks[trackIndex] || false
     if (!track) return
 
     const getMediaTrack = async () => {

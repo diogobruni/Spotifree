@@ -1,14 +1,5 @@
 // https://github.com/jergra/spotify-react-next-2/blob/main/components/Player.js
 
-import {
-  TrashIcon,
-  VolumeUpIcon as VolumeDownIcon
-} from "@heroicons/react/outline"
-
-import {
-  VolumeUpIcon,
-} from "@heroicons/react/solid"
-
 import { GrPlayFill, GrPauseFill, GrRefresh } from "react-icons/gr"
 import { AiFillStepForward, AiFillStepBackward, AiFillSound, AiOutlineSound } from "react-icons/ai"
 import { useSession } from "next-auth/react"
@@ -31,7 +22,7 @@ export default function Player({ }: Props) {
     prevTrack, nextTrack
   } = usePlayer()
 
-  const { track } = playerPlaylist?.tracks?.items[trackIndex] || {}
+  const track = playerPlaylist?.tracks[trackIndex] || false
 
   const handlePlayPause = () => {
     // setIsPlaying(!isPlaying)
@@ -52,7 +43,7 @@ export default function Player({ }: Props) {
     <div className="h-full grid grid-cols-3 bg-zinc-900 border-t border-zinc-800 text-white text-xs md:text-base px-2 md:px-8">
       {/* left */}
       <div className="flex items-center space-x-4">
-        {track?.album && (
+        {track && track.album && (
           <img
             className="hidden md:inline h-16 w-16"
             src={track?.album?.images?.[0]?.url}
@@ -60,8 +51,8 @@ export default function Player({ }: Props) {
           />
         )}
         <div>
-          <h3 className="text-md">{track?.name}</h3>
-          <p className="text-sm text-zinc-400">{track?.artists?.[0]?.name}</p>
+          <h3 className="text-md">{track && track.name}</h3>
+          <p className="text-sm text-zinc-400">{track && track.artists?.[0].name}</p>
         </div>
       </div>
 

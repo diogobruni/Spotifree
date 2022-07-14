@@ -29,7 +29,7 @@ export default function usePlayer() {
   }
 
   const prevTrack = () => {
-    if (!playerPlaylist?.tracks?.items?.length) return
+    if (!playerPlaylist?.tracks?.length) return
 
     const prevIndex = Math.max(trackIndex - 1, 0)
     if (prevIndex !== trackIndex) {
@@ -39,9 +39,9 @@ export default function usePlayer() {
   }
 
   const nextTrack = () => {
-    if (!playerPlaylist?.tracks?.items?.length) return
+    if (!playerPlaylist?.tracks?.length) return
 
-    const lastIndex = playerPlaylist.tracks.items.length - 1
+    const lastIndex = playerPlaylist.tracks.length - 1
     const nextIndex = Math.min(trackIndex + 1, lastIndex)
     if (nextIndex !== trackIndex) {
       setIsPlayerFetching(true)

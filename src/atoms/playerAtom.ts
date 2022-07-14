@@ -1,10 +1,12 @@
 import { atom } from "recoil"
+import { TrackListProps } from "../types/trackList.types"
 
 interface PlaylistWithTracks extends SpotifyApi.SinglePlaylistResponse {
   tracks: SpotifyApi.PlaylistTrackResponse
 }
 
-export const playerPlaylistAtom = atom<PlaylistWithTracks>({
+// export const playerPlaylistAtom = atom<PlaylistWithTracks>({
+export const playerPlaylistAtom = atom<TrackListProps | undefined>({
   key: "playerPlaylistState",
   default: undefined,
 })
