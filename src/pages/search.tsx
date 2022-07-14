@@ -75,11 +75,11 @@ const Search: NextPage = () => {
     const { tracks } = (await spotifyApi.searchTracks(debouncedQuery)).body
 
     if (!tracks?.items.length) {
-      setResultTracks([])
+      setResultTracks(undefined)
       return
     }
 
-    setResultTracks(tracks.items)
+    // setResultTracks(tracks.items)
   }
 
   const searchPlaylists = async () => {
@@ -90,7 +90,7 @@ const Search: NextPage = () => {
       return
     }
 
-    setResultPlaylists(playlists.items)
+    // setResultPlaylists(playlists.items)
   }
 
   useEffect(() => {
