@@ -1,4 +1,4 @@
-import { ImageProps } from "next/image"
+import { ImageProps } from "./image.types"
 
 export interface PlaylistProps {
   id: string

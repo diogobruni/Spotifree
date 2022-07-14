@@ -26,8 +26,8 @@ export default function PlaylistCover({ playlist }: PlaylistCoverProps) {
     <section className={`flex items-end space-x-7 bg-gradient-to-b ${color} to-black h-80 text-white p-8`}>
       <img
         className="w-56 h-56 shadow-2xl"
-        src={playlist?.images?.[0]?.url}
-        alt=""
+        src={playlist.images[0]?.url}
+        alt={playlist.name}
       />
 
       <div>
