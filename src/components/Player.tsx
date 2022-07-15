@@ -11,14 +11,22 @@ import MediaPlayer from "./MediaPlayer"
 import { useEffect, useState } from "react"
 import { TrackProps } from "../types/trackList.types"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
 type Props = {}
 
 export default function Player({ }: Props) {
+  const router = useRouter()
+  const { pathname } = router
+  // const [pathname, setPathname] = useState<string>('')
+
+  // useEffect(() => {
+  //   setPathname(router.pathname)
+  // }, [router.isReady])
+
   const spotifyApi = useSpotify()
   // const { data: session, status } = useSession()
   const [track, setTrack] = useState<TrackProps>()
-  const [isShufflingLocal, setIsShufflingLocal] = useState(false)
 
   const {
     playerPlaylist,
@@ -54,10 +62,6 @@ export default function Player({ }: Props) {
     }
   }, [playerPlaylist, trackIndex])
 
-  useEffect(() => {
-    setIsShufflingLocal(isShuffling)
-  }, [isShuffling])
-
   return (
     // <div className="h-24 bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
     // <div className="h-full grid grid-cols-3 bg-gradient-to-b from-black to-gray-900 text-white text-xs md:text-base px-2 md:px-8">
@@ -87,7 +91,7 @@ export default function Player({ }: Props) {
           className=""
           onClick={handleToggleShuffle}
         >
-          <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShufflingLocal ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
+          <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShuffling ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
         </button>
 
         <button
@@ -132,7 +136,7 @@ export default function Player({ }: Props) {
 
         <Link href="/playlist/playing">
           <a>
-            <BsMusicNoteList className="h-4 w-4 text-zinc-400 hover:text-white transition-colors" />
+            <BsMusicNoteList className={`h-4 w-4 transition-colors ${pathname === '/playlist/playing' ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
           </a>
         </Link>
       </div>

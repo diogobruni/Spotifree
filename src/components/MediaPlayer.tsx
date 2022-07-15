@@ -58,7 +58,7 @@ export default function MediaPlayer({ }: Props) {
   }, [isPlaying])
 
   useEffect(() => {
-    if (!player) return
+    if (!player || !player.i || isNaN(volume)) return
 
     player.setVolume(volume)
   }, [volume])

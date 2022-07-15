@@ -1,6 +1,3 @@
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-
 import PlaylistSongs from '../../components/PlaylistSongs'
 import Loading from '../../components/Loading'
 import usePlayer from '../../hooks/usePlayer'
@@ -9,8 +6,6 @@ import HeaderCover from '../../components/HeaderCover'
 type Props = {}
 
 export default function Playlist({ }: Props) {
-  const router = useRouter()
-
   const {
     playerPlaylist
   } = usePlayer()
