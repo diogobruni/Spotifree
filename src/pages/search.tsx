@@ -165,15 +165,15 @@ const Search: NextPage = () => {
           <input
             className="w-full px-8 py-4 rounded-full text-lg font-semibold text-zinc-900 outline-none focus:ring ring-green-500"
             type="text"
-            placeholder="Search"
+            placeholder="Search for artist, song or playlist"
             onChange={(e) => { setQuery(e.target.value) }}
             autoFocus
           />
         </div>
       </form>
 
-      {!isFetching && (
-        <div className="flex-1">
+      {isFetching && (
+        <div className="flex-1 flex flex-col justify-center">
           <Loading />
         </div>
       )}
