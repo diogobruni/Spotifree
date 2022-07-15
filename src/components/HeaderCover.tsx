@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
-import { PlaylistProps } from "../types/playlist.types"
+import { ImageProps } from "../types/image.types"
 
 interface PlaylistCoverProps {
-  playlist: PlaylistProps
+  title: string
+  hat?: string
+  description?: string
+  image: ImageProps
 }
 
 const colors = [
@@ -15,29 +18,33 @@ const colors = [
   "from-purple-500",
 ]
 
-export default function PlaylistCover({ playlist }: PlaylistCoverProps) {
+export default function HeaderCover({ title, hat, description, image }: PlaylistCoverProps) {
   const [color, setColor] = useState<string>('')
 
   useEffect(() => {
     setColor(colors[Math.floor(Math.random() * colors.length)])
-  }, [playlist])
+  }, [title])
 
   return (
     <section className={`flex items-end space-x-7 bg-gradient-to-b ${color} to-black h-80 text-white p-8`}>
       <img
         className="w-56 h-56 shadow-2xl"
-        src={playlist.images[0]?.url}
-        alt={playlist.name}
+        src={image.url}
+        width={image.width}
+        height={image.height}
+        alt={title}
       />
 
       <div>
-        <p className="text-xs font-bold">PLAYLIST</p>
+        {hat && (
+          <p className="text-xs font-bold">{hat}</p>
+        )}
         <h1 className="text-xl md:text-3xl xl:text-8xl font-bold leading-relaxed">
-          {playlist?.name}
+          {title}
         </h1>
 
-        {playlist?.description && (
-          <p className="mt-4 text-zinc-400">{playlist.description}</p>
+        {description && (
+          <p className="mt-4 text-zinc-400">{description}</p>
         )}
       </div>
     </section>

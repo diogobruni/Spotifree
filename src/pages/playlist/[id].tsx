@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useCache } from '../../hooks/useCache'
 import useSpotify from '../../hooks/useSpotify'
 
-import PlaylistCover from '../../components/PlaylistCover'
+import HeaderCover from '../../components/HeaderCover'
 import PlaylistSongs from '../../components/PlaylistSongs'
 import Loading from '../../components/Loading'
 import { PlaylistProps } from '../../types/playlist.types'
@@ -103,7 +103,14 @@ export default function Playlist({ }: Props) {
 
   return (
     <main>
-      <PlaylistCover playlist={playlist} />
+      {/* <PlaylistCover playlist={playlist} /> */}
+      <HeaderCover
+        // playlist={playlist}
+        title={playlist.name}
+        hat="PLAYLIST"
+        description={playlist.description}
+        image={playlist.images[0]}
+      />
 
       <PlaylistSongs trackList={trackList} />
     </main>

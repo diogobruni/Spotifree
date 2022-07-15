@@ -2,12 +2,14 @@
 
 import { GrPlayFill, GrPauseFill, GrRefresh } from "react-icons/gr"
 import { AiFillStepForward, AiFillStepBackward, AiFillSound, AiOutlineSound } from "react-icons/ai"
+import { BsMusicNoteList } from "react-icons/bs"
 import { useSession } from "next-auth/react"
 import usePlayer from "../hooks/usePlayer"
 import useSpotify from "../hooks/useSpotify"
 import MediaPlayer from "./MediaPlayer"
 import { useEffect, useState } from "react"
 import { TrackProps } from "../types/trackList.types"
+import Link from "next/link"
 
 type Props = {}
 
@@ -110,6 +112,14 @@ export default function Player({ }: Props) {
         </button>
 
         {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
+
+        <Link
+          href="/playlist/playing"
+        >
+          <a>
+            <BsMusicNoteList className="h-4 w-4 text-zinc-400 hover:text-white transition-colors" />
+          </a>
+        </Link>
       </div>
 
       {/* right */}

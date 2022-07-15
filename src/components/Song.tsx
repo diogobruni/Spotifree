@@ -37,13 +37,17 @@ export default function Song({ trackListSourceId, order, track, selectPlaylist }
 
         <img
           className='h-10 w-10'
-          src={track.album?.images[0].url}
+          src={track.album?.images?.[0]?.url || ''}
           alt={track.album?.name}
         />
 
         <div>
-          <p className={`w-36 lg:w-64 truncate text-md ${isCurrentSong ? 'text-green-500' : 'text-white'}`}>{track?.name}</p>
-          <p className='w-40 text-sm'>{track.artists?.[0].name}</p>
+          <p className={`w-36 lg:w-64 truncate text-md ${isCurrentSong ? 'text-green-500' : 'text-white'}`}>
+            {track?.name}
+          </p>
+          <p className='w-40 text-sm'>
+            {track.artists?.[0].name}
+          </p>
         </div>
       </div>
 
