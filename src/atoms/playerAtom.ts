@@ -37,6 +37,14 @@ export const playerTrackIndexAtom = atom<number>({
   ]
 })
 
+export const playerTrackIndexHistoryAtom = atom<number[]>({
+  key: "playerTrackIndexHistoryAtom",
+  default: undefined,
+  effects: [
+    localStorageEffect("playerTrackIndexHistoryAtom"),
+  ]
+})
+
 export const playerStateAtom = atom<number>({
   key: "playerStateAtom",
   default: -1,
@@ -57,5 +65,13 @@ export const playerVolumeAtom = atom<number>({
   default: 50,
   effects: [
     localStorageEffect("playerVolumeAtom"),
+  ]
+})
+
+export const playerShuffleAtom = atom<boolean>({
+  key: "playerShuffleAtom",
+  default: false,
+  effects: [
+    localStorageEffect("playerShuffleAtom"),
   ]
 })

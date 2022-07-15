@@ -2,6 +2,7 @@
 
 import { GrPlayFill, GrPauseFill, GrRefresh } from "react-icons/gr"
 import { AiFillStepForward, AiFillStepBackward, AiFillSound, AiOutlineSound } from "react-icons/ai"
+import { TiArrowShuffle } from "react-icons/ti"
 import { BsMusicNoteList } from "react-icons/bs"
 import { useSession } from "next-auth/react"
 import usePlayer from "../hooks/usePlayer"
@@ -17,6 +18,7 @@ export default function Player({ }: Props) {
   const spotifyApi = useSpotify()
   // const { data: session, status } = useSession()
   const [track, setTrack] = useState<TrackProps>()
+  const [isShufflingLocal, setIsShufflingLocal] = useState(false)
 
   const {
     playerPlaylist,
@@ -24,6 +26,7 @@ export default function Player({ }: Props) {
     isPlaying, playPause,
     isPlayerFetching,
     volume, setVolume,
+    isShuffling, setIsShuffling,
     prevTrack, nextTrack
   } = usePlayer()
 
@@ -40,13 +43,20 @@ export default function Player({ }: Props) {
     nextTrack()
   }
 
+  const handleToggleShuffle = () => {
+    setIsShuffling(!isShuffling)
+  }
+
   useEffect(() => {
     const auxTrack = playerPlaylist?.tracks[trackIndex] || false
     if (auxTrack) {
       setTrack(auxTrack)
     }
-
   }, [playerPlaylist, trackIndex])
+
+  useEffect(() => {
+    setIsShufflingLocal(isShuffling)
+  }, [isShuffling])
 
   return (
     // <div className="h-24 bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
@@ -72,6 +82,13 @@ export default function Player({ }: Props) {
         {/* <SwitchHorizontalIcon
           className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
         /> */}
+
+        <button
+          className=""
+          onClick={handleToggleShuffle}
+        >
+          <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShufflingLocal ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
+        </button>
 
         <button
           className=""
@@ -113,9 +130,7 @@ export default function Player({ }: Props) {
 
         {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
 
-        <Link
-          href="/playlist/playing"
-        >
+        <Link href="/playlist/playing">
           <a>
             <BsMusicNoteList className="h-4 w-4 text-zinc-400 hover:text-white transition-colors" />
           </a>
