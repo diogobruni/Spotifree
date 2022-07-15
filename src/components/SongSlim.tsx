@@ -18,7 +18,7 @@ export default function SongSlim({ trackListSourceId, order, track, selectPlayli
   } = usePlayer()
 
   const handlePlaySong = () => {
-    if (trackIndex === order) return
+    if (trackIndex === order && playerPlaylist?.sourceId === trackListSourceId) return
 
     selectPlaylist()
     setTrackIndex(order)

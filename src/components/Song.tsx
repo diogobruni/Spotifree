@@ -18,7 +18,7 @@ export default function Song({ trackListSourceId, order, track, selectPlaylist }
   } = usePlayer()
 
   const handlePlaySong = () => {
-    if (trackIndex === order) return
+    if (trackIndex === order && playerPlaylist?.sourceId === trackListSourceId) return
 
     selectPlaylist()
     setTrackIndex(order)
