@@ -27,6 +27,11 @@ export default function Song({ trackListSourceId, order, track, selectPlaylist }
 
   const isCurrentSong = playerPlaylist?.sourceId === trackListSourceId && trackIndex === order
 
+  if (
+    !track
+    || !track?.name
+  ) return <></>
+
   return (
     <div
       className={`grid grid-cols-2 py-4 px-5 hover:bg-zinc-900 rounded-lg cursor-pointer ${isCurrentSong ? 'text-green-500' : 'text-zinc-400'}`}

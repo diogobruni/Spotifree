@@ -31,6 +31,11 @@ export default function MediaPlayer({ }: Props) {
     if (!track) return
 
     const getMediaTrack = async () => {
+      if (!track?.name) {
+        nextTrack()
+        return
+      }
+
       const query = `${track?.artists?.[0]?.name} - ${track?.name}`
       const response = await fetch(`/api/youtube/search-v2?query=${query}`)
       const mediaData = await response.json()
