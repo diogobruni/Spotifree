@@ -8,6 +8,7 @@ import { homeCategoriesPlaylists } from '../atoms/playlistAtom';
 
 import Loading from '../components/Loading';
 import PlaylistCard from '../components/PlaylistCard';
+import { CategoryWithPlaylistProps } from '../types/category.type';
 
 // import { spotifyApi } from '../lib/spotify'
 
@@ -45,15 +46,21 @@ const Home: NextPage = () => {
           offset: 0
         })).body
 
-        setSectionPlaylists(prev =>
-          [
-            ...prev,
-            {
-              ...category,
-              playlists: playlists.items
-            }
-          ]
-        )
+        const newCategoryWithPlaylists: CategoryWithPlaylistProps = {
+          id: category.id,
+          name: category.name,
+          playlists: playlists.items.slice(0, 6).map(playlist => ({
+            id: playlist.id as string,
+            name: playlist.name as string,
+            images: playlist.images as any,
+            description: playlist.description as string
+          }))
+        }
+
+        setSectionPlaylists(prev => [
+          ...prev,
+          newCategoryWithPlaylists
+        ])
       }
     }
 
@@ -70,7 +77,7 @@ const Home: NextPage = () => {
         <div key={id}>
           <h2 className="text-2xl font-semibold mb-5">{name}</h2>
 
-          <div className="grid grid-cols-8 gap-8">
+          <div className="grid grid-cols-3 gap-4 xl:grid-cols-6 xl:gap-6">
             {playlists?.map(playlist => (
               <PlaylistCard key={playlist.id} playlist={playlist} />
             ))}

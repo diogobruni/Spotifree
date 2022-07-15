@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
 import { GrPlayFill } from 'react-icons/gr'
+import { PlaylistProps } from '../types/playlist.types'
 
 type Props = {
-  playlist: SpotifyApi.PlaylistObjectSimplified
+  playlist: PlaylistProps
 }
 
 export default function PlaylistCard({ playlist }: Props) {

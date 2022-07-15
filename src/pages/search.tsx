@@ -12,6 +12,7 @@ import { ArtistProps } from '../types/artist.types';
 import { TrackListProps, TrackProps } from '../types/trackList.types';
 import { PlaylistProps } from '../types/playlist.types';
 import SongSlim from '../components/SongSlim';
+import slugify from 'slugify';
 
 const Search: NextPage = () => {
   const spotifyApi = useSpotify()
@@ -31,16 +32,18 @@ const Search: NextPage = () => {
 
   const [resultPlaylists, setResultPlaylists] = useState<PlaylistProps[]>([])
 
-  const searchArtist = async () => {
+  const searchArtist = async (): Promise<{ artist: boolean, artistTrackList: boolean }> => {
     const { artists } = (await spotifyApi.searchArtists(debouncedQuery)).body
 
     if (!artists?.items?.length) {
       setResultArtist(undefined)
       setResultArtistTrackList(undefined)
-      return
+      return {
+        artist: false,
+        artistTrackList: false
+      }
     }
 
-    console.log(artists.items[0])
     setResultArtist({
       id: artists.items[0].id,
       name: artists.items[0].name,
@@ -48,7 +51,13 @@ const Search: NextPage = () => {
     })
 
     const { tracks } = (await spotifyApi.getArtistTopTracks(artists.items[0].id, 'US')).body
-    if (!tracks.length) return
+    if (!tracks.length) {
+      setResultArtistTrackList(undefined)
+      return {
+        artist: true,
+        artistTrackList: false
+      }
+    }
 
     const auxTrackList: TrackProps[] = tracks.map(track => ({
       id: track?.id as string,
@@ -69,45 +78,92 @@ const Search: NextPage = () => {
       sourceId: `artist_${artists.items[0].id}`,
       tracks: auxTrackList
     } as TrackListProps)
+
+    return {
+      artist: true,
+      artistTrackList: true
+    }
   }
 
-  const searchTracks = async () => {
+  const searchTracks = async (): Promise<{ trackList: boolean }> => {
     const { tracks } = (await spotifyApi.searchTracks(debouncedQuery)).body
 
     if (!tracks?.items.length) {
       setResultTracks(undefined)
-      return
+      return {
+        trackList: false
+      }
     }
 
-    // setResultTracks(tracks.items)
+    const auxTrackList: TrackProps[] = tracks.items.slice(0, 10).map(track => ({
+      id: track?.id as string,
+      name: track?.name as string,
+      duration_ms: track?.duration_ms as number,
+      album: {
+        id: track?.album.id as any,
+        name: track?.album.name as any,
+        images: track?.album.images as any,
+      },
+      artists: track?.artists.map(artist => ({
+        id: artist.id as string,
+        name: artist.name as string
+      }))
+    }))
+
+    setResultTracks({
+      sourceId: `trackList_${slugify(debouncedQuery)}`,
+      tracks: auxTrackList
+    } as TrackListProps)
+
+    return {
+      trackList: true
+    }
   }
 
-  const searchPlaylists = async () => {
+  const searchPlaylists = async (): Promise<{ playlists: boolean }> => {
     const { playlists } = (await spotifyApi.searchPlaylists(debouncedQuery)).body
 
     if (!playlists?.items.length) {
       setResultPlaylists([])
-      return
+      return {
+        playlists: false
+      }
     }
 
-    // setResultPlaylists(playlists.items)
+    const auxPlaylists: PlaylistProps[] = playlists.items.slice(0, 6).map(playlist => ({
+      id: playlist?.id as string,
+      name: playlist?.name as string,
+      images: playlist?.images as any,
+      description: playlist?.description as string,
+    }))
+
+    setResultPlaylists(auxPlaylists)
+
+    return {
+      playlists: true
+    }
   }
 
   useEffect(() => {
-    if (!debouncedQuery) return
+    if (!debouncedQuery) {
+      setIsFetching(false)
+      return
+    }
 
-    searchArtist()
-    searchTracks()
-    searchPlaylists()
+    setIsFetching(true)
+
+    searchArtist().then((data) => { setIsFetching(false) })
+    searchTracks().then((data) => { setIsFetching(false) })
+    searchPlaylists().then((data) => { setIsFetching(false) })
   }, [debouncedQuery])
 
   return (
-    <main className="p-8 space-y-12">
+    <main className="p-8 space-y-12 flex flex-col min-h-full">
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()} className="">
         <div className="">
           <input
-            className="w-full px-4 py-2 rounded-full text-sm text-zinc-900 outline-none focus:ring ring-green-500"
+            className="w-full px-8 py-4 rounded-full text-lg font-semibold text-zinc-900 outline-none focus:ring ring-green-500"
             type="text"
             placeholder="Search"
             onChange={(e) => { setQuery(e.target.value) }}
@@ -116,9 +172,15 @@ const Search: NextPage = () => {
         </div>
       </form>
 
-      {resultArtist && (
+      {!isFetching && (
+        <div className="flex-1">
+          <Loading />
+        </div>
+      )}
+
+      {!isFetching && resultArtist && resultArtistTrackList?.tracks.length && (
         <div>
-          <h2 className='text-3xl mb-4'>Artist</h2>
+          <h2 className='text-3xl mb-4'>Artist search result</h2>
           <div className="flex gap-4 group">
             <div className="flex flex-col gap-4 items-center justify-center p-8 rounded-lg shadow-lg cursor-pointer bg-zinc-900 group-hover:bg-zinc-800/80 transition-colors">
               <img
@@ -135,12 +197,44 @@ const Search: NextPage = () => {
             <div className='flex-1 flex flex-col space-y-1 p-2 rounded-lg shadow-lg text-white bg-zinc-900 group-hover:bg-zinc-800/80 transition-colors'>
               {resultArtistTrackList?.tracks.map((track, i) => (
                 <SongSlim
-                  key={track.id}
+                  key={`resultArtistTrackList_${track.id}`}
                   trackListSourceId={resultArtistTrackList.sourceId}
                   selectPlaylist={() => { setPlayerPlaylist(resultArtistTrackList) }}
                   track={track}
                   order={i}
                 />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!isFetching && resultTracks?.tracks.length && (
+        <div>
+          <h2 className='text-3xl mb-4'>Tracks search results</h2>
+          <div className="group">
+            <div className='flex-1 flex flex-col space-y-1 p-2 rounded-lg shadow-lg text-white bg-zinc-900 group-hover:bg-zinc-800/80 transition-colors'>
+              {resultTracks?.tracks.map((track, i) => (
+                <Song
+                  key={`resultTracks_${track.id}`}
+                  trackListSourceId={resultTracks.sourceId}
+                  selectPlaylist={() => { setPlayerPlaylist(resultTracks) }}
+                  track={track}
+                  order={i}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!isFetching && resultPlaylists?.length > 0 && (
+        <div>
+          <h2 className='text-3xl mb-4'>Playlists search results</h2>
+          <div className="group">
+            <div className="grid grid-cols-3 gap-4 xl:grid-cols-6 xl:gap-6">
+              {resultPlaylists?.map(playlist => (
+                <PlaylistCard key={`resultPlaylists_${playlist.id}`} playlist={playlist} />
               ))}
             </div>
           </div>

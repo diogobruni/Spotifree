@@ -6,12 +6,15 @@ import { useSession } from "next-auth/react"
 import usePlayer from "../hooks/usePlayer"
 import useSpotify from "../hooks/useSpotify"
 import MediaPlayer from "./MediaPlayer"
+import { useEffect, useState } from "react"
+import { TrackProps } from "../types/trackList.types"
 
 type Props = {}
 
 export default function Player({ }: Props) {
   const spotifyApi = useSpotify()
   // const { data: session, status } = useSession()
+  const [track, setTrack] = useState<TrackProps>()
 
   const {
     playerPlaylist,
@@ -21,8 +24,6 @@ export default function Player({ }: Props) {
     volume, setVolume,
     prevTrack, nextTrack
   } = usePlayer()
-
-  const track = playerPlaylist?.tracks[trackIndex] || false
 
   const handlePlayPause = () => {
     // setIsPlaying(!isPlaying)
@@ -36,6 +37,14 @@ export default function Player({ }: Props) {
   const handleNextTrack = () => {
     nextTrack()
   }
+
+  useEffect(() => {
+    const auxTrack = playerPlaylist?.tracks[trackIndex] || false
+    if (auxTrack) {
+      setTrack(auxTrack)
+    }
+
+  }, [playerPlaylist, trackIndex])
 
   return (
     // <div className="h-24 bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
