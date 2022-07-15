@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { TrackProps } from "../types/trackList.types"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import ActiveLink from "./ActiveLink"
 
 type Props = {}
 
@@ -134,11 +135,15 @@ export default function Player({ }: Props) {
 
         {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
 
-        <Link href="/playlist/playing">
-          <a>
-            <BsMusicNoteList className={`h-4 w-4 transition-colors ${pathname === '/playlist/playing' ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
+        <ActiveLink
+          href="/playlist/playing"
+          activeClassName="text-green-600 hover:text-green-500"
+          notActiveClassName="hover:text-white"
+        >
+          <a className="text-zinc-400 transition-colors">
+            <BsMusicNoteList className="h-4 w-4" />
           </a>
-        </Link>
+        </ActiveLink>
       </div>
 
       {/* right */}

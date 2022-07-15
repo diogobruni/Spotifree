@@ -48,7 +48,7 @@ export default function MediaPlayer({ }: Props) {
   }, [trackIndex])
 
   useEffect(() => {
-    if (!player) return
+    if (!player || !player.i) return
 
     if (isPlaying) {
       player.playVideo()
@@ -73,6 +73,8 @@ export default function MediaPlayer({ }: Props) {
   }
 
   const handlePlayerStateChange: YouTubeProps['onStateChange'] = (event) => {
+    if (!player || !player.i) return
+
     setPlayerState(player.getPlayerState())
     switch (player.getPlayerState()) {
       case -1:

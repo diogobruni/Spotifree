@@ -20,22 +20,22 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         {router.pathname === '/login' ? (
           <Component {...pageProps} />
         ) : (
-          <div className="flex flex-col h-screen bg-black">
-            <div className="flex flex-row flex-1 overflow-hidden">
-              <Sidebar />
+          <NoSSR>
+            <div className="flex flex-col h-screen bg-black">
+              <div className="flex flex-row flex-1 overflow-hidden">
+                <Sidebar />
 
-              <div className="bg-black text-white flex-1 overflow-y-scroll scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-cursor-default">
-                <FloatingUserBar />
-                <NoSSR>
+                <div className="bg-black text-white flex-1 overflow-y-scroll scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-cursor-default">
+                  <FloatingUserBar />
                   <Component {...pageProps} />
-                </NoSSR>
+                </div>
+              </div>
+
+              <div className="h-24">
+                <Player />
               </div>
             </div>
-
-            <div className="h-24">
-              <Player />
-            </div>
-          </div>
+          </NoSSR>
         )}
 
       </RecoilRoot>
