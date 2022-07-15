@@ -29,9 +29,9 @@ export default function HeaderCover({ title, hat, description, image }: Playlist
     <section className={`flex items-end space-x-7 bg-gradient-to-b ${color} to-black h-80 text-white p-8`}>
       <img
         className="w-56 h-56 shadow-2xl"
-        src={image.url}
-        width={image.width}
-        height={image.height}
+        src={image?.url || ''}
+        width={image?.width || 220}
+        height={image?.height || 220}
         alt={title}
       />
 

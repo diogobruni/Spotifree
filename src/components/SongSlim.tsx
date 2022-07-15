@@ -27,10 +27,7 @@ export default function SongSlim({ trackListSourceId, order, track, selectPlayli
 
   const isCurrentSong = playerPlaylist?.sourceId === trackListSourceId && trackIndex === order
 
-  if (
-    !track
-    || !track?.name
-  ) return <></>
+  if (!track || !track?.name) return <></>
 
   return (
     <div

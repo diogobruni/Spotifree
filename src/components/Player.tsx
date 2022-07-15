@@ -2,6 +2,7 @@
 
 import { GrPlayFill, GrPauseFill, GrRefresh } from "react-icons/gr"
 import { AiFillStepForward, AiFillStepBackward, AiFillSound, AiOutlineSound } from "react-icons/ai"
+import { TiArrowShuffle } from "react-icons/ti"
 import { BsMusicNoteList } from "react-icons/bs"
 import { useSession } from "next-auth/react"
 import usePlayer from "../hooks/usePlayer"
@@ -10,10 +11,20 @@ import MediaPlayer from "./MediaPlayer"
 import { useEffect, useState } from "react"
 import { TrackProps } from "../types/trackList.types"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import ActiveLink from "./ActiveLink"
 
 type Props = {}
 
 export default function Player({ }: Props) {
+  const router = useRouter()
+  const { pathname } = router
+  // const [pathname, setPathname] = useState<string>('')
+
+  // useEffect(() => {
+  //   setPathname(router.pathname)
+  // }, [router.isReady])
+
   const spotifyApi = useSpotify()
   // const { data: session, status } = useSession()
   const [track, setTrack] = useState<TrackProps>()
@@ -24,6 +35,7 @@ export default function Player({ }: Props) {
     isPlaying, playPause,
     isPlayerFetching,
     volume, setVolume,
+    isShuffling, setIsShuffling,
     prevTrack, nextTrack
   } = usePlayer()
 
@@ -40,12 +52,15 @@ export default function Player({ }: Props) {
     nextTrack()
   }
 
+  const handleToggleShuffle = () => {
+    setIsShuffling(!isShuffling)
+  }
+
   useEffect(() => {
     const auxTrack = playerPlaylist?.tracks[trackIndex] || false
     if (auxTrack) {
       setTrack(auxTrack)
     }
-
   }, [playerPlaylist, trackIndex])
 
   return (
@@ -72,6 +87,13 @@ export default function Player({ }: Props) {
         {/* <SwitchHorizontalIcon
           className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
         /> */}
+
+        <button
+          className=""
+          onClick={handleToggleShuffle}
+        >
+          <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShuffling ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
+        </button>
 
         <button
           className=""
@@ -113,13 +135,15 @@ export default function Player({ }: Props) {
 
         {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
 
-        <Link
+        <ActiveLink
           href="/playlist/playing"
+          activeClassName="text-green-600 hover:text-green-500"
+          notActiveClassName="hover:text-white"
         >
-          <a>
-            <BsMusicNoteList className="h-4 w-4 text-zinc-400 hover:text-white transition-colors" />
+          <a className="text-zinc-400 transition-colors">
+            <BsMusicNoteList className="h-4 w-4" />
           </a>
-        </Link>
+        </ActiveLink>
       </div>
 
       {/* right */}

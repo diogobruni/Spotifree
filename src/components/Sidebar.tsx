@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 
 import useSpotify from "../hooks/useSpotify"
 import Link from "next/link"
+import ActiveLink from "./ActiveLink"
 
 // interface PlaylistProps {
 //   id: string
@@ -34,22 +35,24 @@ export function Sidebar() {
   }, [session, spotifyApi])
 
   return (
-    <div className="text-gray-500 text-xs lg:text-sm border-r border-gray-900 p-5 h-full sm:max-w-[12rem] lg:max-w-[15rem]">
+    <div className="text-zinc-500 text-xs lg:text-sm border-r border-gray-900 p-5 h-full sm:max-w-[12rem] lg:max-w-[15rem]">
 
       <div className="space-y-4 overflow-y-scroll scrollbar-hide">
-        <Link href="/">
-          <a className="flex items-center gap-2 hover:text-white">
+        <ActiveLink href="/" activeClassName="text-green-600 hover:text-green-500" notActiveClassName="hover:text-white">
+          {/* <Link href="/"> */}
+          <a className="flex items-center gap-2">
             <HomeIcon className="h-5 w-5" />
             <p>Home</p>
           </a>
-        </Link>
+          {/* </Link> */}
+        </ActiveLink>
 
-        <Link href="/search">
-          <a className="flex items-center gap-2 hover:text-white">
+        <ActiveLink href="/search" activeClassName="text-green-600 hover:text-green-500" notActiveClassName="hover:text-white">
+          <a className="flex items-center gap-2">
             <SearchIcon className="h-5 w-5" />
             <p>Search</p>
           </a>
-        </Link>
+        </ActiveLink>
 
         {/* <button className="flex items-center gap-2 hover:text-white">
           <LibraryIcon className="h-5 w-5" />
@@ -85,14 +88,16 @@ export function Sidebar() {
 
         {/* Playlists... */}
         {playlist.map(playlist => (
-          <Link
+          <ActiveLink
             key={playlist.id}
             href={`/playlist/${playlist.id}`}
+            activeClassName="text-green-600 hover:text-green-500"
+            notActiveClassName="hover:text-white"
           >
-            <a className="flex cursor-pointer hover:text-white">
+            <a className="flex cursor-pointer">
               {playlist.name}
             </a>
-          </Link>
+          </ActiveLink>
         ))}
       </div>
     </div>
