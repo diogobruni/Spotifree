@@ -13,8 +13,11 @@ import { TrackListProps, TrackProps } from '../types/trackList.types';
 import { PlaylistProps } from '../types/playlist.types';
 import SongSlim from '../components/SongSlim';
 import slugify from 'slugify';
+import { useRouter } from 'next/router';
 
 const Search: NextPage = () => {
+  const router = useRouter()
+
   const spotifyApi = useSpotify()
 
   const {
@@ -121,6 +124,10 @@ const Search: NextPage = () => {
   }
 
   const searchPlaylists = async (): Promise<{ playlists: boolean }> => {
+    router.push({
+      query: { q: debouncedQuery }
+    }, undefined, { shallow: true })
+
     const { playlists } = (await spotifyApi.searchPlaylists(debouncedQuery)).body
 
     if (!playlists?.items.length) {
@@ -157,12 +164,17 @@ const Search: NextPage = () => {
     searchPlaylists().then((data) => { setIsFetching(false) })
   }, [debouncedQuery])
 
+  useEffect(() => {
+    setQuery(router.query.q as string || '')
+  }, [router])
+
   return (
     <main className="p-8 space-y-12 flex flex-col min-h-full">
 
       <form onSubmit={(e) => e.preventDefault()} className="">
         <div className="">
           <input
+            value={query}
             className="w-full px-8 py-4 rounded-full text-lg font-semibold text-zinc-900 outline-none focus:ring ring-green-500"
             type="text"
             placeholder="Search for artist, song or playlist"
@@ -231,12 +243,10 @@ const Search: NextPage = () => {
       {!isFetching && resultPlaylists?.length > 0 && (
         <div>
           <h2 className='text-3xl mb-4'>Playlists search results</h2>
-          <div className="group">
-            <div className="grid grid-cols-3 gap-4 xl:grid-cols-6 xl:gap-6">
-              {resultPlaylists?.map(playlist => (
-                <PlaylistCard key={`resultPlaylists_${playlist.id}`} playlist={playlist} />
-              ))}
-            </div>
+          <div className="grid grid-cols-3 gap-4 xl:grid-cols-6 xl:gap-6">
+            {resultPlaylists?.map(playlist => (
+              <PlaylistCard key={`resultPlaylists_${playlist.id}`} playlist={playlist} />
+            ))}
           </div>
         </div>
       )}

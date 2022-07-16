@@ -66,7 +66,6 @@ export default function MediaPlayer({ }: Props) {
   }, [volume])
 
   const handlePlayerReady: YouTubeProps['onReady'] = (event) => {
-    console.log(event)
     if (!event.target.playerInfo.duration) {
       toast.error('Skipping unavailable song')
       nextTrack()
