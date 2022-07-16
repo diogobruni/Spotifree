@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import YouTube, { YouTubeProps, YouTubePlayer } from "react-youtube"
+import { toast } from 'react-toastify'
+
 import usePlayer from "../hooks/usePlayer"
 
 interface YoutubeTrack {
@@ -64,6 +66,12 @@ export default function MediaPlayer({ }: Props) {
   }, [volume])
 
   const handlePlayerReady: YouTubeProps['onReady'] = (event) => {
+    console.log(event)
+    if (!event.target.playerInfo.duration) {
+      toast.error('Skipping unavailable song')
+      nextTrack()
+    }
+
     setPlayer(event.target)
 
     if (isPlaying) {
@@ -108,7 +116,7 @@ export default function MediaPlayer({ }: Props) {
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       // autoplay: 1,
-      controls: 0,
+      // controls: 0,
     },
   }
 
@@ -121,8 +129,12 @@ export default function MediaPlayer({ }: Props) {
         // ref={player}
         videoId={youtubeTrack?.id}
         opts={opts}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         onReady={handlePlayerReady}
         onStateChange={handlePlayerStateChange}
+      // onError={(e) => { console.log('Error: ', e) }}
+      // onEnd={(e) => { console.log('End video: ', e) }}
       />
     </div>
   )

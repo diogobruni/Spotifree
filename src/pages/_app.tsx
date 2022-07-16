@@ -1,14 +1,16 @@
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { RecoilRoot } from 'recoil'
+import { Flip, ToastContainer } from 'react-toastify'
 
 import { Sidebar } from '../components/Sidebar'
 import Player from '../components/Player'
+import FloatingUserBar from '../components/FloatingUserBar'
+import NoSSR from '../components/NoSSR'
 
 import '../styles/globals.css'
-import FloatingUserBar from '../components/FloatingUserBar'
-import { useRouter } from 'next/router'
-import NoSSR from '../components/NoSSR'
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter()
@@ -27,6 +29,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
                 <div className="bg-black text-white flex-1 overflow-y-scroll scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-cursor-default">
                   <FloatingUserBar />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    transition={Flip}
+                    theme={'dark'}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                  />
                   <Component {...pageProps} />
                 </div>
               </div>
