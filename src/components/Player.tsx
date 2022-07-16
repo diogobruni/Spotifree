@@ -1,17 +1,15 @@
-// https://github.com/jergra/spotify-react-next-2/blob/main/components/Player.js
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 import { GrPlayFill, GrPauseFill, GrRefresh } from "react-icons/gr"
 import { AiFillStepForward, AiFillStepBackward, AiFillSound, AiOutlineSound } from "react-icons/ai"
 import { TiArrowShuffle } from "react-icons/ti"
 import { BsMusicNoteList } from "react-icons/bs"
-import { useSession } from "next-auth/react"
+
 import usePlayer from "../hooks/usePlayer"
 import useSpotify from "../hooks/useSpotify"
 import MediaPlayer from "./MediaPlayer"
-import { useEffect, useState } from "react"
 import { TrackProps } from "../types/trackList.types"
-import Link from "next/link"
-import { useRouter } from "next/router"
 import ActiveLink from "./ActiveLink"
 
 type Props = {}
