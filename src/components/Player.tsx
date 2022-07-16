@@ -154,13 +154,15 @@ export default function Player({ }: Props) {
           onClick={() => volume > 0 && setVolume(volume - 10)}
           className="h-5 w-5 cursor-pointer text-zinc-400 hover:text-white transition-colors"
         />
+
         <input
-          className="w-14 md:w-28"
+          className="input-range w-14 md:w-28"
           type="range"
           value={volume}
           onChange={(e) => setVolume(Number(e.target.value))}
           min={0}
           max={100}
+          style={{ "--input-value": `${volume}%` } as React.CSSProperties}
         />
 
         <AiFillSound

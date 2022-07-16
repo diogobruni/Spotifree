@@ -1,0 +1,46 @@
+.input-range {
+  -webkit-appearance: none;
+
+  display: inline-block;
+  vertical-align: middle;
+
+  background-size: var(--input-value, 50%) 100%;
+  @apply w-full h-1 bg-zinc-700 rounded-full bg-gradient-to-t from-zinc-400 to-zinc-400 bg-no-repeat shadow;
+}
+
+.input-range:hover {
+  @apply from-green-500 to-green-500 bg-no-repeat;
+}
+
+/* THUMB */
+.input-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  @apply opacity-0 w-[14px] h-[14px] rounded-full bg-zinc-400 cursor-ew-resize shadow shadow-black transition-colors;
+}
+.input-range::-moz-range-thumb {
+  -webkit-appearance: none;
+  @apply opacity-0 w-[14px] h-[14px] rounded-full bg-zinc-400 cursor-ew-resize shadow shadow-black transition-colors;
+}
+.input-range::-ms-thumb {
+  -webkit-appearance: none;
+  @apply opacity-0 w-[14px] h-[14px] rounded-full bg-zinc-400 cursor-ew-resize shadow shadow-black transition-colors;
+}
+
+/* HOVER:THUMB */
+.input-range:hover::-webkit-slider-thumb {
+  @apply opacity-100;
+}
+.input-range:hover::-moz-range-thumb {
+  @apply opacity-100;
+}
+.input-range:hover::-ms-thumb {
+  @apply opacity-100;
+}
+
+/* TRACK */
+.input-range::-webkit-slider-runnable-track {
+}
+.input-range::-moz-range-track {
+}
+.input-range::-ms-track {
+}
