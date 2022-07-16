@@ -1,7 +1,16 @@
 import { useEffect } from "react"
 import { useRecoilState } from "recoil"
 
-import { playerIsFetchingAtom, playerIsPlayingAtom, playerPlaylistAtom, playerShuffleAtom, playerStateAtom, playerTrackIndexAtom, playerTrackIndexHistoryAtom, playerVolumeAtom } from "../atoms/playerAtom"
+import {
+  playerIsFetchingAtom,
+  playerIsPlayingAtom,
+  playerPlaylistAtom,
+  playerShuffleAtom,
+  playerStateAtom,
+  playerTrackIndexAtom,
+  playerTrackIndexHistoryAtom,
+  playerVolumeAtom
+} from "../atoms/playerAtom"
 
 const randomBetweenNonRepeat = (min: number, max: number, exclude: number) => {
   let random = Math.floor(Math.random() * (max - min + 1)) + min
