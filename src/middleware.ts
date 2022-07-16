@@ -39,6 +39,7 @@ export const config = {
     '/',
     '/api/:path*',
     '/login',
+    '/search',
     '/playlist/:path*'
   ],
 }
