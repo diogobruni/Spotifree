@@ -47,7 +47,7 @@ export default function MediaPlayer({ }: Props) {
       }
     }
     getMediaTrack()
-  }, [trackIndex])
+  }, [trackIndex, playerPlaylist])
 
   useEffect(() => {
     if (!player || !player.i) return
