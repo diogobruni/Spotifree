@@ -22,9 +22,7 @@ export default function useSpotify() {
     const getAccessToken = async () => {
       try {
         const me = await spotifyApi.getMe()
-        console.log(me)
       } catch (e: any) {
-        console.log(e.statusCode)
         if (e.statusCode === 401) {
           const newAccessToken = await spotifyRefreshToken()
           if (newAccessToken) {

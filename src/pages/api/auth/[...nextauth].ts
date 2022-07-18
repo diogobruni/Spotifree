@@ -47,8 +47,6 @@ export default NextAuth({
 
       // initial sign in
       if (account && user) {
-        console.log(account.access_token)
-
         return {
           ...token,
           accessToken: account.access_token,
