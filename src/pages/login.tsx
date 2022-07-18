@@ -20,6 +20,7 @@ interface SessionUserProps {
 export default function Login({ providers }: LoginProps) {
   const { data: session, status } = useSession()
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [refreshToken, setrefreshToken] = useState<string | null>(null)
 
   useEffect(() => {
     if (session) {
@@ -29,6 +30,7 @@ export default function Login({ providers }: LoginProps) {
 
       const user = session.user as SessionUserProps
       setAccessToken(user?.accessToken)
+      setrefreshToken(user?.refreshToken)
     }
   }, [session])
 
@@ -60,6 +62,14 @@ export default function Login({ providers }: LoginProps) {
 
           <p className="text-xl text-white mb-2">Your Access Token</p>
           <div className="bg-zinc-900 p-4 text-white rounded-xl whitespace-pre-wrap break-words">{accessToken}</div>
+        </div>
+      )}
+
+      {refreshToken && (
+        <div className="w-1/2 mx-auto mt-12">
+
+          <p className="text-xl text-white mb-2">Your Refresh Token</p>
+          <div className="bg-zinc-900 p-4 text-white rounded-xl whitespace-pre-wrap break-words">{refreshToken}</div>
         </div>
       )}
     </div>
