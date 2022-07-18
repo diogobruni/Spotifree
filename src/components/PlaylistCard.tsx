@@ -8,6 +8,7 @@ type Props = {
 }
 
 export default function PlaylistCard({ playlist }: Props) {
+  if (!playlist?.images?.[0]?.url) return <></>
   return (
     <Link
       href={`/playlist/${playlist.id}`}
@@ -17,10 +18,10 @@ export default function PlaylistCard({ playlist }: Props) {
         <div className="relative">
           <img
             className="rounded-md shadow mb-4"
-            src={playlist.images[0].url}
-            width={playlist.images[0].width}
-            height={playlist.images[0].height}
-            alt={playlist.name}
+            src={playlist?.images?.[0]?.url}
+            width={playlist?.images?.[0]?.width}
+            height={playlist?.images?.[0]?.height}
+            alt={playlist?.name}
           />
 
           <span className="absolute bottom-2 right-2 bg-green-500 rounded-full shadow-xl p-4 hidden group-hover:inline hover:bg-green-400 hover:scale-105 transition">
