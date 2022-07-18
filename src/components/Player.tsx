@@ -19,6 +19,9 @@ export default function Player({ }: Props) {
 
   const [track, setTrack] = useState<TrackProps>()
 
+  const [isPlaybackChanging, setIsPlaybackChanging] = useState(false)
+  const [visibleCurrentPlayback, setVisibleCurrentPlayback] = useState<number>(0)
+
   const {
     playerPlaylist,
     trackIndex,
@@ -48,10 +51,19 @@ export default function Player({ }: Props) {
     setIsShuffling(!isShuffling)
   }
 
-  const handleSeekPlayback = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePlaybackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const playback = parseInt(value)
-    setSeekPlayback(playback)
+    setVisibleCurrentPlayback(playback)
+  }
+
+  const handlePlaybackMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+    setIsPlaybackChanging(true)
+  }
+
+  const handlePlaybackMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+    setIsPlaybackChanging(false)
+    setSeekPlayback(visibleCurrentPlayback)
   }
 
   useEffect(() => {
@@ -60,6 +72,12 @@ export default function Player({ }: Props) {
       setTrack(auxTrack)
     }
   }, [playerPlaylist, trackIndex])
+
+  useEffect(() => {
+    if (!isPlaybackChanging) {
+      setVisibleCurrentPlayback(currentPlayback)
+    }
+  }, [currentPlayback])
 
   return (
     // <div className="h-24 bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
@@ -147,16 +165,18 @@ export default function Player({ }: Props) {
 
         <div className="w-full flex items-center gap-2">
           <span className="text-xs text-zinc-400">
-            {duration(currentPlayback * 1000)}
+            {duration(visibleCurrentPlayback * 1000)}
           </span>
           <input
             className="input-range"
             type="range"
-            value={currentPlayback}
-            onChange={handleSeekPlayback}
+            value={visibleCurrentPlayback}
+            onChange={handlePlaybackChange}
+            onMouseDown={handlePlaybackMouseDown}
+            onMouseUp={handlePlaybackMouseUp}
             min={0}
             max={durationPlayback}
-            style={{ "--input-value": `${currentPlayback / durationPlayback * 100}%` } as React.CSSProperties}
+            style={{ "--input-value": `${visibleCurrentPlayback / durationPlayback * 100}%` } as React.CSSProperties}
           />
           <span className="text-xs text-zinc-400">
             {duration(durationPlayback * 1000)}
