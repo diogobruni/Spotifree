@@ -3697,11 +3697,6 @@ source-map@^0.6.0, source-map@^0.6.1:
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spotify-web-api-js@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/spotify-web-api-js/-/spotify-web-api-js-1.5.2.tgz#ab69cab0809e357061c5684d6215bcf107822e0c"
-  integrity sha512-ie1gbg1wCabfobIkXTIBLUMyULS/hMCpF44Cdx2pAO0/+FrjhNSDjlDzcwCEDy+ZIo3Fscs+Gkg/GTeQ/ijo+Q==
-
 spotify-web-api-node@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/spotify-web-api-node/-/spotify-web-api-node-5.0.2.tgz#683669b3ccc046a5a357300f151df93a2b3539fe"
