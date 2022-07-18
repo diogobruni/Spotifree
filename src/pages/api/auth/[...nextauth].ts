@@ -44,8 +44,11 @@ export default NextAuth({
       const { token }: { token: any } = props
       const { account, user } = props
 
+
       // initial sign in
       if (account && user) {
+        console.log(account.access_token)
+
         return {
           ...token,
           accessToken: account.access_token,

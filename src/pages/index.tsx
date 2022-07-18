@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 
@@ -18,7 +17,6 @@ import { CategoryWithPlaylistProps } from '../types/category.type';
 
 const Home: NextPage = () => {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
 
   // let isFetching = false
   const [isFetching, setIsFetching] = useState(false)
@@ -65,7 +63,7 @@ const Home: NextPage = () => {
     }
 
     getCategories()
-  }, [session, spotifyApi])
+  }, [spotifyApi])
 
   if (!sectionPlaylists.length)
     return <Loading />

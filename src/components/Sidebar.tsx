@@ -1,29 +1,11 @@
-import { HomeIcon, SearchIcon, LibraryIcon, PlusCircleIcon, HeartIcon, RssIcon, LogoutIcon } from "@heroicons/react/outline"
-import { signOut, useSession } from "next-auth/react"
+import { HomeIcon, SearchIcon, LogoutIcon } from "@heroicons/react/outline"
 import { useEffect, useState } from "react"
 
 import useSpotify from "../hooks/useSpotify"
-import Link from "next/link"
 import ActiveLink from "./ActiveLink"
-
-// interface PlaylistProps {
-//   id: string
-//   name: string
-//   href: string
-//   images: [{
-//     url: string
-//     width: number
-//     height: number,
-//   }]
-//   tracks: {
-//     href: string
-//     total: number
-//   }
-// }
 
 export function Sidebar() {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
   const [playlist, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
 
   useEffect(() => {
@@ -32,7 +14,7 @@ export function Sidebar() {
         setPlaylists(data.body.items)
       })
     }
-  }, [session, spotifyApi])
+  }, [spotifyApi])
 
   return (
     <div className="text-zinc-500 text-xs lg:text-sm border-r border-gray-900 p-5 h-full sm:max-w-[12rem] lg:max-w-[15rem]">
@@ -59,13 +41,13 @@ export function Sidebar() {
           <p>Your Library</p>
         </button> */}
 
-        <button
+        {/* <button
           className="flex items-center gap-2 hover:text-white"
           onClick={() => { signOut() }}
         >
           <LogoutIcon className="h-5 w-5" />
           <p>Logout</p>
-        </button>
+        </button> */}
 
         <hr className="border-t-[0.1px] border-gray-900" />
 
