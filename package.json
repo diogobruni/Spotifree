@@ -20,7 +20,7 @@
     "react-youtube": "^9.0.3",
     "recoil": "^0.7.4",
     "slugify": "^1.6.5",
-    "spotify-web-api-node": "^5.0.2",
+    "spotify-web-api-js": "^1.5.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "use-debounce": "^8.0.1",
     "youtube-search": "^1.1.6",

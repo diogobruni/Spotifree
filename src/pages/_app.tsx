@@ -6,7 +6,6 @@ import { Flip, ToastContainer } from 'react-toastify'
 
 import { Sidebar } from '../components/Sidebar'
 import Player from '../components/Player'
-import FloatingUserBar from '../components/FloatingUserBar'
 import NoSSR from '../components/NoSSR'
 
 import '../styles/globals.css'
@@ -28,7 +27,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                 <Sidebar />
 
                 <div className="bg-black text-white flex-1 overflow-y-scroll scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-cursor-default">
-                  <FloatingUserBar />
                   <ToastContainer
                     position="top-right"
                     autoClose={5000}
