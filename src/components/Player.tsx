@@ -7,30 +7,25 @@ import { TiArrowShuffle } from "react-icons/ti"
 import { BsMusicNoteList } from "react-icons/bs"
 
 import usePlayer from "../hooks/usePlayer"
-import useSpotify from "../hooks/useSpotify"
 import MediaPlayer from "./MediaPlayer"
 import { TrackProps } from "../types/trackList.types"
 import ActiveLink from "./ActiveLink"
+import { duration } from "../lib/time"
 
 type Props = {}
 
 export default function Player({ }: Props) {
   const router = useRouter()
-  const { pathname } = router
-  // const [pathname, setPathname] = useState<string>('')
 
-  // useEffect(() => {
-  //   setPathname(router.pathname)
-  // }, [router.isReady])
-
-  const spotifyApi = useSpotify()
-  // const { data: session, status } = useSession()
   const [track, setTrack] = useState<TrackProps>()
 
   const {
     playerPlaylist,
     trackIndex,
     isPlaying, playPause,
+    currentPlayback, setCurrentPlayback,
+    seekPlayback, setSeekPlayback,
+    durationPlayback, setDurationPlayback,
     isPlayerFetching,
     volume, setVolume,
     isShuffling, setIsShuffling,
@@ -38,7 +33,6 @@ export default function Player({ }: Props) {
   } = usePlayer()
 
   const handlePlayPause = () => {
-    // setIsPlaying(!isPlaying)
     playPause()
   }
 
@@ -52,6 +46,12 @@ export default function Player({ }: Props) {
 
   const handleToggleShuffle = () => {
     setIsShuffling(!isShuffling)
+  }
+
+  const handleSeekPlayback = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const playback = parseInt(value)
+    setSeekPlayback(playback)
   }
 
   useEffect(() => {
@@ -81,67 +81,87 @@ export default function Player({ }: Props) {
       </div>
 
       {/* center */}
-      <div className="flex items-center justify-center gap-5">
-        {/* <SwitchHorizontalIcon
-          className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
-        /> */}
+      <div className="flex flex-col items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-5">
+          {/* <SwitchHorizontalIcon
+            className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
+          /> */}
 
-        <button
-          className=""
-          onClick={handleToggleShuffle}
-        >
-          <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShuffling ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
-        </button>
+          <button
+            className=""
+            onClick={handleToggleShuffle}
+          >
+            <TiArrowShuffle className={`h-5 w-5 transition-colors ${isShuffling ? 'text-green-600 hover:text-green-500' : 'text-zinc-400 hover:text-white'}`} />
+          </button>
 
-        <button
-          className=""
-          onClick={handlePrevTrack}
-        >
-          <AiFillStepBackward className="h-5 w-5 text-zinc-400 hover:text-white transition-colors" />
-        </button>
-        {/* <RewindIcon
-          onClick={handlePrevTrack}
-          className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
-        /> */}
+          <button
+            className=""
+            onClick={handlePrevTrack}
+          >
+            <AiFillStepBackward className="h-5 w-5 text-zinc-400 hover:text-white transition-colors" />
+          </button>
+          {/* <RewindIcon
+            onClick={handlePrevTrack}
+            className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out"
+          /> */}
 
-        <button
-          className="h-10 w-10 bg-white rounded-full flex items-center justify-center hover:scale-110 transition transform duration-100 ease-out"
-          onClick={handlePlayPause}
-        >
-          {isPlaying && isPlayerFetching && (
-            // <RefreshIcon className="h-10 w-10 cursor-pointer animate-spin" />
-            <GrRefresh className="h-5 w-5 animate-spin" />
-          )}
+          <button
+            className="h-10 w-10 bg-white rounded-full flex items-center justify-center hover:scale-110 transition transform duration-100 ease-out"
+            onClick={handlePlayPause}
+          >
+            {isPlaying && isPlayerFetching && (
+              // <RefreshIcon className="h-10 w-10 cursor-pointer animate-spin" />
+              <GrRefresh className="h-5 w-5 animate-spin" />
+            )}
 
-          {isPlaying && !isPlayerFetching && (
-            // <PauseIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
-            <GrPauseFill className="h-5 w-5" />
-          )}
+            {isPlaying && !isPlayerFetching && (
+              // <PauseIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
+              <GrPauseFill className="h-5 w-5" />
+            )}
 
-          {!isPlaying && (
-            // <PlayIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
-            <GrPlayFill className="h-5 w-5 translate-x-0.5" />
-          )}
-        </button>
+            {!isPlaying && (
+              // <PlayIcon className="h-10 w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" />
+              <GrPlayFill className="h-5 w-5 translate-x-0.5" />
+            )}
+          </button>
 
-        <button
-          className=""
-          onClick={handleNextTrack}
-        >
-          <AiFillStepForward className="h-5 w-5 text-zinc-400 hover:text-white transition-colors" />
-        </button>
+          <button
+            className=""
+            onClick={handleNextTrack}
+          >
+            <AiFillStepForward className="h-5 w-5 text-zinc-400 hover:text-white transition-colors" />
+          </button>
 
-        {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
+          {/* <ReplyIcon className="h-5 w-5 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" /> */}
 
-        <ActiveLink
-          href="/playlist/playing"
-          activeClassName="text-green-600 hover:text-green-500"
-          notActiveClassName="hover:text-white"
-        >
-          <a className="text-zinc-400 transition-colors">
-            <BsMusicNoteList className="h-4 w-4" />
-          </a>
-        </ActiveLink>
+          <ActiveLink
+            href="/playlist/playing"
+            activeClassName="text-green-600 hover:text-green-500"
+            notActiveClassName="hover:text-white"
+          >
+            <a className="text-zinc-400 transition-colors">
+              <BsMusicNoteList className="h-4 w-4" />
+            </a>
+          </ActiveLink>
+        </div>
+
+        <div className="w-full flex items-center gap-2">
+          <span className="text-xs text-zinc-400">
+            {duration(currentPlayback * 1000)}
+          </span>
+          <input
+            className="input-range"
+            type="range"
+            value={currentPlayback}
+            onChange={handleSeekPlayback}
+            min={0}
+            max={durationPlayback}
+            style={{ "--input-value": `${currentPlayback / durationPlayback * 100}%` } as React.CSSProperties}
+          />
+          <span className="text-xs text-zinc-400">
+            {duration(durationPlayback * 1000)}
+          </span>
+        </div>
       </div>
 
       {/* right */}

@@ -2,9 +2,12 @@ import { useEffect } from "react"
 import { useRecoilState } from "recoil"
 
 import {
+  playerCurrentPlaybackAtom,
+  playerDurationPlaybackAtom,
   playerIsFetchingAtom,
   playerIsPlayingAtom,
   playerPlaylistAtom,
+  playerSeekPlaybackAtom,
   playerShuffleAtom,
   playerStateAtom,
   playerTrackIndexAtom,
@@ -29,6 +32,9 @@ export default function usePlayer() {
   const [playerState, setPlayerState] = useRecoilState(playerStateAtom)
   const [isPlayerFetching, setIsPlayerFetching] = useRecoilState(playerIsFetchingAtom)
   const [isPlaying, setIsPlaying] = useRecoilState(playerIsPlayingAtom)
+  const [seekPlayback, setSeekPlayback] = useRecoilState(playerSeekPlaybackAtom)
+  const [currentPlayback, setCurrentPlayback] = useRecoilState(playerCurrentPlaybackAtom)
+  const [durationPlayback, setDurationPlayback] = useRecoilState(playerDurationPlaybackAtom)
   const [volume, setVolume] = useRecoilState(playerVolumeAtom)
   const [isShuffling, setIsShuffling] = useRecoilState(playerShuffleAtom)
 
@@ -95,6 +101,9 @@ export default function usePlayer() {
   return {
     playerState, setPlayerState,
     isPlaying, setIsPlaying,
+    seekPlayback, setSeekPlayback,
+    currentPlayback, setCurrentPlayback,
+    durationPlayback, setDurationPlayback,
     isPlayerFetching, setIsPlayerFetching,
     play, pause, playPause,
     volume, setVolume,

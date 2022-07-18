@@ -1,5 +1,6 @@
 import { atom } from "recoil"
 import { TrackListProps } from "../types/trackList.types"
+import { YouTubePlayer } from "react-youtube"
 
 interface localStorageEffectProps {
   setSelf: (arg0: string) => void
@@ -74,4 +75,19 @@ export const playerShuffleAtom = atom<boolean>({
   effects: [
     localStorageEffect("playerShuffleAtom"),
   ]
+})
+
+export const playerSeekPlaybackAtom = atom<number>({
+  key: "playerSeekPlaybackAtom",
+  default: 0,
+})
+
+export const playerCurrentPlaybackAtom = atom<number>({
+  key: "playerCurrentPlaybackAtom",
+  default: 0,
+})
+
+export const playerDurationPlaybackAtom = atom<number>({
+  key: "playerDurationPlaybackAtom",
+  default: 0,
 })

@@ -17,12 +17,17 @@ export default function MediaPlayer({ }: Props) {
 
   // Player controls
   const [player, setPlayer] = useState<YouTubePlayer>()
+  let timer: NodeJS.Timer
 
   const {
+    // player, setPlayer,
     playerState, setPlayerState,
     playerPlaylist, setPlayerPlaylist,
     trackIndex, setTrackIndex,
     isPlaying, setIsPlaying,
+    seekPlayback, setSeekPlayback,
+    currentPlayback, setCurrentPlayback,
+    durationPlayback, setDurationPlayback,
     isPlayerFetching, setIsPlayerFetching,
     volume, setVolume,
     prevTrack, nextTrack
@@ -65,6 +70,30 @@ export default function MediaPlayer({ }: Props) {
     player.setVolume(volume)
   }, [volume])
 
+  // Playback progress bar
+  useEffect(() => {
+    // if (!player || !player.i) return
+
+    if (isPlaying && typeof timer === 'undefined') {
+      timer = setInterval(() => {
+        const currentProgress = player && player.i
+          ? Math.ceil(player.getCurrentTime())
+          : 0
+
+        setCurrentPlayback(currentProgress)
+      }, 500)
+    }
+
+    return () => clearInterval(timer)
+  }, [player, isPlaying])
+
+  useEffect(() => {
+    if (!player || !player.i) return
+
+    player.seekTo(seekPlayback)
+    setCurrentPlayback(seekPlayback)
+  }, [seekPlayback])
+
   const handlePlayerReady: YouTubeProps['onReady'] = (event) => {
     if (!event.target.playerInfo.duration) {
       toast.error('Skipping unavailable song')
@@ -77,12 +106,15 @@ export default function MediaPlayer({ }: Props) {
       event.target.playVideo()
     }
     event.target.setVolume(volume)
+
+    setDurationPlayback(event.target.getDuration() || event.target.playerInfo?.duration || 0)
   }
 
   const handlePlayerStateChange: YouTubeProps['onStateChange'] = (event) => {
     if (!player || !player.i) return
 
     setPlayerState(player.getPlayerState())
+
     switch (player.getPlayerState()) {
       case -1:
         // Not started yet
@@ -90,11 +122,10 @@ export default function MediaPlayer({ }: Props) {
         break
       case 0:
         // Finished
-        nextTrack()
+        // nextTrack() // Already handled by onEnd
         break
       case 1:
         // Playing
-        setIsPlayerFetching(false)
         break
       case 2:
         // Paused
@@ -107,6 +138,19 @@ export default function MediaPlayer({ }: Props) {
         if (isPlaying) player.playVideo()
         break
     }
+  }
+
+  const handlePlayerPlay = () => {
+    setIsPlayerFetching(false)
+    setIsPlaying(true)
+  }
+
+  const handlePlayerPause = () => {
+    setIsPlaying(false)
+  }
+
+  const handlePlayerEnd = () => {
+    nextTrack()
   }
 
   const opts: YouTubeProps['opts'] = {
@@ -128,12 +172,12 @@ export default function MediaPlayer({ }: Props) {
         // ref={player}
         videoId={youtubeTrack?.id}
         opts={opts}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
         onReady={handlePlayerReady}
         onStateChange={handlePlayerStateChange}
+        onPlay={handlePlayerPlay}
+        onPause={handlePlayerPause}
+        onEnd={handlePlayerEnd}
       // onError={(e) => { console.log('Error: ', e) }}
-      // onEnd={(e) => { console.log('End video: ', e) }}
       />
     </div>
   )
