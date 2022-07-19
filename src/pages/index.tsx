@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 const Home: NextPage = () => {
   const router = useRouter()
   const [accessToken, setAccessToken] = useRecoilState(spotifyAccessTokenAtom)
-  const [refreshedTime, setRefreshedTime] = useRecoilState(spotifyRefreshedtimeAtom)
 
   const spotifyApi = useSpotify()
 
@@ -61,15 +60,6 @@ const Home: NextPage = () => {
       } catch (e: any) {
         if (e.statusCode === 401) {
           setAccessToken('')
-          // router.reload()
-          // const refreshTimePastInMinutes = (Date.now() - refreshedTime) / 1000 / 60
-
-          // if (refreshedTime && refreshTimePastInMinutes < 10) {
-          //   router.push('/token-expired')
-          // } else {
-          //   setAccessToken('')
-          //   router.reload()
-          // }
         }
       }
     }
