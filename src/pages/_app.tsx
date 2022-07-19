@@ -18,7 +18,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <SessionProvider session={session}>
       <RecoilRoot>
 
-        {router.pathname === '/login' ? (
+        {['/login', '/token-expired'].includes(router.pathname) ? (
+          // {router.pathname === '/login' ? (
           <Component {...pageProps} />
         ) : (
           <NoSSR>

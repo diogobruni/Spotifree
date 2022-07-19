@@ -7,8 +7,14 @@ import useSpotify from '../hooks/useSpotify';
 import Loading from '../components/Loading';
 import PlaylistCard from '../components/PlaylistCard';
 import { CategoryWithPlaylistProps } from '../types/category.type';
+import { spotifyAccessTokenAtom, spotifyRefreshedtimeAtom } from '../atoms/spotifyAtom';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+  const router = useRouter()
+  const [accessToken, setAccessToken] = useRecoilState(spotifyAccessTokenAtom)
+  const [refreshedTime, setRefreshedTime] = useRecoilState(spotifyRefreshedtimeAtom)
+
   const spotifyApi = useSpotify()
 
   const [isFetching, setIsFetching] = useState(false)
@@ -21,40 +27,55 @@ const Home: NextPage = () => {
     setIsFetching(true)
 
     const getCategories = async () => {
-      const { categories } = (await spotifyApi.getCategories({
-        limit: 5,
-        offset: 0,
-        country: 'US',
-        locale: 'en_US'
-      })).body
-
-      for (let category of categories.items) {
-        const { playlists } = (await spotifyApi.getPlaylistsForCategory(category.id, {
+      try {
+        const { categories } = (await spotifyApi.getCategories({
+          limit: 5,
+          offset: 0,
           country: 'US',
-          limit: 8,
-          offset: 0
+          locale: 'en_US'
         })).body
 
-        const newCategoryWithPlaylists: CategoryWithPlaylistProps = {
-          id: category.id,
-          name: category.name,
-          playlists: playlists.items.slice(0, 6).map(playlist => ({
-            id: playlist.id as string,
-            name: playlist.name as string,
-            images: playlist.images as any,
-            description: playlist.description as string
-          }))
-        }
+        for (let category of categories.items) {
+          const { playlists } = (await spotifyApi.getPlaylistsForCategory(category.id, {
+            country: 'US',
+            limit: 8,
+            offset: 0
+          })).body
 
-        setSectionPlaylists(prev => [
-          ...prev,
-          newCategoryWithPlaylists
-        ])
+          const newCategoryWithPlaylists: CategoryWithPlaylistProps = {
+            id: category.id,
+            name: category.name,
+            playlists: playlists.items.slice(0, 6).map(playlist => ({
+              id: playlist.id as string,
+              name: playlist.name as string,
+              images: playlist.images as any,
+              description: playlist.description as string
+            }))
+          }
+
+          setSectionPlaylists(prev => [
+            ...prev,
+            newCategoryWithPlaylists
+          ])
+        }
+      } catch (e: any) {
+        if (e.statusCode === 401) {
+          setAccessToken('')
+          // router.reload()
+          // const refreshTimePastInMinutes = (Date.now() - refreshedTime) / 1000 / 60
+
+          // if (refreshedTime && refreshTimePastInMinutes < 10) {
+          //   router.push('/token-expired')
+          // } else {
+          //   setAccessToken('')
+          //   router.reload()
+          // }
+        }
       }
     }
 
     getCategories()
-  }, [])
+  }, [spotifyApi, router.isReady])
 
   if (!sectionPlaylists.length)
     return <Loading />

@@ -19,6 +19,15 @@ const localStorageEffect: any = (key: string) => ({ setSelf, onSet }: localStora
       : localStorage.setItem(key, JSON.stringify(newValue))
   })
 }
+
+export const spotifyRefreshedtimeAtom = atom<number>({
+  key: "spotifyRefreshedtimeAtom",
+  default: 0,
+  effects: [
+    localStorageEffect("spotifyRefreshedtimeAtom"),
+  ]
+})
+
 export const spotifyAccessTokenAtom = atom<string>({
   key: "spotifyAccessTokenAtom",
   default: undefined,

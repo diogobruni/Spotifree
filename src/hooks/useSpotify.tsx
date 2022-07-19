@@ -2,17 +2,26 @@ import { useEffect } from "react"
 import { useRecoilState } from "recoil"
 import { useRouter } from 'next/router'
 
-import { spotifyAccessTokenAtom } from "../atoms/spotifyAtom"
+import { spotifyAccessTokenAtom, spotifyRefreshedtimeAtom } from "../atoms/spotifyAtom"
 import { spotifyApi, spotifyRefreshToken } from "../lib/spotify"
 
 export default function useSpotify() {
   const router = useRouter()
   const [accessToken, setAccessToken] = useRecoilState(spotifyAccessTokenAtom)
+  const [refreshedTime, setRefreshedTime] = useRecoilState(spotifyRefreshedtimeAtom)
 
   useEffect(() => {
     spotifyApi.setRefreshToken(process.env.NEXT_PUBLIC_SPOTIFY_REFRESH_TOKEN as string)
 
-    if (accessToken) {
+    const refreshTimePastInMinutes = (Date.now() - refreshedTime) / 1000 / 60
+
+    if (
+      accessToken
+      && (
+        refreshedTime === 0
+        || refreshTimePastInMinutes < 60
+      )
+    ) {
       spotifyApi.setAccessToken(accessToken)
       return
     }
@@ -24,11 +33,24 @@ export default function useSpotify() {
         const me = await spotifyApi.getMe()
       } catch (e: any) {
         if (e.statusCode === 401) {
-          const newAccessToken = await spotifyRefreshToken()
-          if (newAccessToken) {
-            setAccessToken(newAccessToken)
-            spotifyApi.setAccessToken(accessToken)
-            router.reload()
+          try {
+            const newAccessToken = await spotifyRefreshToken()
+            if (newAccessToken) {
+              setAccessToken(newAccessToken)
+              setRefreshedTime(Date.now())
+              spotifyApi.setAccessToken(accessToken)
+              router.reload()
+            } else {
+              setAccessToken('')
+              setRefreshedTime(Date.now())
+              // router.reload()
+              router.push('/token-expired')
+            }
+          } catch (e) {
+            setAccessToken('')
+            setRefreshedTime(Date.now())
+            // router.reload()
+            router.push('/token-expired')
           }
         }
       }
