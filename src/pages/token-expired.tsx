@@ -7,7 +7,7 @@ export default function TokenExpired() {
       <p className="text-zinc-400 text-center text-lg">
         The Spotify access token has expired.
         <br />
-        Please ask to the developer to refresh it.
+        Please ask the developer to update it.
       </p>
 
       <a
