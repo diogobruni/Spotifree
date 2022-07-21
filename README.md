@@ -1,34 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div id="top"></div>
+
+<br />
+<div align="center">
+  <img src="https://i.imgur.com/HC2bF5S.png" alt="Logo" width="220" height="220">
+
+  <h3 align="center">Spotifree</h3>
+
+  <p align="center">
+    A Spotify like using YouTube API
+    <br />
+    <br />
+    <a href="https://spotifreee.vercel.app/" target="_BLANK">View Demo</a>
+  </p>
+</div>
+
+## About The Project
+
+<br />
+
+<a  href="https://spotifreee.vercel.app/"  target="_BLANK">
+  <img  src="https://i.imgur.com/K0kcCNV.png"  alt="Spotifree" />
+</a>
+
+<br />
+
+<a  href="https://spotifreee.vercel.app/playlist/37i9dQZF1DXcBWIGoYBM5M"  target="_BLANK">
+  <img  src="https://i.imgur.com/TqHq2Rm.png"  alt="Spotifree - Today's Top Hits" />
+</a>
+
+<br />
+
+<a  href="https://spotifreee.vercel.app/search?q=Michael+Jackson"  target="_BLANK">
+  <img  src="https://i.imgur.com/VR0mBhS.png"  alt="Spotifree - Michael Jackson" />
+</a>
+
+<br />
+<br />
+
+Spotifree is a music streaming app that gives you access to all tracks available on Spotify and YouTube.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### Built With
+
+- [React.js](https://reactjs.org/)
+- [Next.js](https://nextjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Tailwind](https://tailwindcss.com/)
+- Spotify and YouTube API's
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running follow these simple steps.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/diogobruni/Spotifree.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   # or
+   yarn
+   ```
+3. Run as develop environment
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<p align="right">(<a href="#top">back to top</a>)</p>
