@@ -89,7 +89,7 @@ export default function Player({ }: Props) {
         <a
           href="https://github.com/diogobruni/Spotifree"
           target="_BLANK"
-          rel="noopener"
+          rel="noreferrer noopener"
           className="flex flex-col items-center mr-4 gap-2 text-zinc-400 hover:text-white transition-colors"
         >
           <VscGithub className="h-6 w-6" />
