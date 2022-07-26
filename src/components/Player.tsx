@@ -86,7 +86,12 @@ export default function Player({ }: Props) {
     <div className="h-full grid grid-cols-3 bg-zinc-900 border-t border-zinc-800 text-white text-xs md:text-base px-2 md:px-8">
       {/* left */}
       <div className="flex items-center space-x-4">
-        <a href="https://github.com/diogobruni/Spotifree" target="_BLANK" className="flex flex-col items-center mr-4 gap-2 text-zinc-400 hover:text-white transition-colors">
+        <a
+          href="https://github.com/diogobruni/Spotifree"
+          target="_BLANK"
+          rel="noopener"
+          className="flex flex-col items-center mr-4 gap-2 text-zinc-400 hover:text-white transition-colors"
+        >
           <VscGithub className="h-6 w-6" />
           <span>GitHub</span>
         </a>
